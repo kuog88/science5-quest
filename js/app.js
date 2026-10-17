@@ -265,13 +265,21 @@
   function startQuiz({ lesson, unit }) {
     if (unit && !bossOpen(unit)) { toast('🔒 先完成這單元每一課的闖關喔！'); location.hash = 'home'; return; }
     let pool;
-    // 點圖題一定會出（最多 3 題），其他題目隨機補滿 8 題
+    // 上一回出過的題目排到最後，這回優先出沒看過的
+    const key = lesson ? lesson.id : unit.id;
+    const recent = new Set((save.recent && save.recent[key]) || []);
+    const fresh = (list) => { const s = shuffle(list); return [...s.filter((q) => !recent.has(q.q)), ...s.filter((q) => recent.has(q.q))]; };
     if (lesson) {
-      const taps = shuffle(lesson.quiz.filter((q) => q.tap)).slice(0, 3);
-      const rest = shuffle(lesson.quiz.filter((q) => !q.tap)).slice(0, 8 - taps.length);
+      // 點圖題每回隨機出 1～3 題，其他題目補滿 8 題
+      const nTap = 1 + Math.floor(Math.random() * 3);
+      const taps = fresh(lesson.quiz.filter((q) => q.tap)).slice(0, nTap);
+      const rest = fresh(lesson.quiz.filter((q) => !q.tap)).slice(0, 8 - taps.length);
       pool = shuffle([...taps, ...rest]).map((q) => ({ ...q, lesson }));
     }
-    else pool = shuffle(unit.lessons.flatMap((id) => L[id].quiz.map((q) => ({ ...q, lesson: L[id] })))).slice(0, 10);
+    else pool = fresh(unit.lessons.flatMap((id) => L[id].quiz.map((q) => ({ ...q, lesson: L[id] })))).slice(0, 10);
+    save.recent = save.recent || {};
+    save.recent[key] = pool.map((q) => q.q);
+    persist();
     game = { lesson, unit, qs: pool, i: 0, right: 0, wrong: [], hearts: 3, marks: [] };
     setTitle(lesson ? `闖關：${lesson.title}` : `${unit.boss.name}`);
     showQ();
