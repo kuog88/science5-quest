@@ -6,6 +6,7 @@
   // ---------- 工具 ----------
   const shuffle = (arr) => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
   const unitOf = (lessonId) => UNITS.find((u) => u.lessons.includes(lessonId));
+  const examBadge = (u) => (u && u.exam ? `<span class="exam-badge">📝 ${window.EXAM_TITLE || '月考範圍'}</span>` : '');
   const starsHtml = (n) => '★'.repeat(n) + '☆'.repeat(3 - n);
 
   // ---------- 進度（存在這台裝置的瀏覽器） ----------
@@ -38,11 +39,25 @@
       speechSynthesis.speak(u);
     } catch (e) {}
   }
-  // 有自己錄的配音（media/<id>.mp3）就播錄音，沒有就用裝置語音
+  // 手機瀏覽器要在「手指點下去的那一刻」先發一次聲音，之後才允許自動唸
+  let unlocked = false;
+  function unlockAudio() {
+    if (unlocked) return;
+    unlocked = true;
+    try { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; speechSynthesis.speak(u); } catch (e) {}
+    try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); actx.resume(); } catch (e) {}
+  }
+  document.addEventListener('pointerdown', unlockAudio, { capture: true });
+  document.addEventListener('touchend', unlockAudio, { capture: true });
+  // media.js 列出的檔案才會去載入，不存在的錄音、影片不會害聲音卡住
+  const MEDIA = window.MEDIA || {};
+  const has = (type, key) => (MEDIA[type] || []).includes(key);
+  // 有自己錄的配音（media/<id>.mp3，要列在 media.js）就播錄音，沒有就用裝置語音
   function say(text, audioSrc) {
     stopTalk();
     if (!soundOn || !text) return;
-    if (audioSrc) {
+    const audioKey = audioSrc && audioSrc.replace(/^media\//, '').replace(/\.mp3$/, '');
+    if (audioSrc && has('audio', audioKey)) {
       const a = new Audio(audioSrc); mediaAudio = a;
       const fallback = () => { if (mediaAudio === a) { mediaAudio = null; tts(text); } };
       a.onerror = fallback; a.play().catch(fallback);
@@ -119,11 +134,16 @@
           <span class="overall">已完成 ${done} / ${all} 關</span>
         </div>
       </section>
+      ${UNITS.some((u) => u.exam) ? `<section class="exam-banner">
+        <b>📝 ${window.EXAM_TITLE || '月考範圍'}</b>
+        <span>${UNITS.filter((u) => u.exam).map((u) => `單元${u.no} ${u.name}`).join('、')}</span>
+        <span class="links">${UNITS.filter((u) => u.exam).flatMap((u) => u.lessons).map((id) => `<a class="big-btn small pink" href="#learn-${id}">${L[id].title}</a>`).join('')}</span>
+      </section>` : ''}
       <section class="units">
         ${UNITS.map((u) => `
-          <div class="unit" style="--tint:${u.tint}">
+          <div class="unit ${u.exam ? 'exam' : ''}" style="--tint:${u.tint}">
             <div class="unit-head"><div class="unit-orb" aria-hidden="true">${u.icon}</div>
-              <div><small>單元${u.no}・第 ${u.weeks} 週</small><h2>${u.name}</h2></div></div>
+              <div><small>單元${u.no}・第 ${u.weeks} 週</small><h2>${u.name}</h2>${examBadge(u)}</div></div>
             ${u.lessons.map((id) => { const l = L[id]; const s = save.stars[id] || 0; return `
               <div class="lesson-row">
                 <div><div class="nm">${l.no}. ${l.title}</div><div class="wk">第 ${l.weeks} 週　<span class="st" aria-label="${s} 顆星">${starsHtml(s)}</span></div></div>
@@ -160,6 +180,7 @@
     app.innerHTML = `
       <section class="lesson-head">
         <div class="eyebrow">單元${u.no} ${u.name}・${l.no}. ${l.title}・第 ${l.weeks} 週</div>
+        ${examBadge(u) ? `<div>${examBadge(u)}</div>` : ''}
         <h1>${l.title}</h1>
         <p>${l.intro}</p>
         <span class="explored" id="explored"></span>
@@ -177,7 +198,7 @@
       ${(l.drawers || []).map((d) => `
         <section>
           <div class="sec-head"><h2>${d.title}</h2><p>${d.desc}</p></div>
-          <div class="drawers">${d.ids.map((id) => { const p = l.parts[id]; return `<button class="drawer" data-part="${id}" style="--c:var(${p.c})">${p.art}<span class="tag">${p.kind}</span><h3>${p.name}</h3></button>`; }).join('')}</div>
+          <div class="drawers">${d.ids.map((id) => { const p = l.parts[id]; return `<button class="drawer" data-part="${id}" style="--c:var(${p.c})">${visual(`${l.id}-${id}`, p.art, true)}<span class="tag">${p.kind}</span><h3>${p.name}</h3></button>`; }).join('')}</div>
         </section>`).join('')}
       <section class="panel go-quiz">
         <img src="assets/img/mascot.webp" alt="">
@@ -206,20 +227,13 @@
       const a = e.target.closest('[data-actn]'); if (a) { sfx.tap(); l.actions[+a.dataset.actn].run(api(stage)); }
     };
     if (l.widget) l.widget($('#widget'), api(stage));
-    app.querySelectorAll('.drawer').forEach((d) => swapPhoto(d, `${l.id}-${d.dataset.part}`, true));
+    // 先把這一課的照片載好，點開卡片時就不會先閃一下手繪圖
+    Object.keys(l.parts).forEach((id) => { if (has('photo', `${l.id}-${id}`)) new Image().src = `media/${l.id}-${id}.jpg`; });
   }
-  // 有可靈產生的寫實圖片（media/<id>.jpg）就取代手繪圖
-  function swapPhoto(box, id, thumb) {
-    const img = new Image();
-    img.alt = '';
-    img.onload = () => {
-      if (!box.isConnected) return;
-      const old = thumb ? box.querySelector('svg') : box;
-      img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;border-radius:' + (thumb ? '14px;aspect-ratio:1/1' : '0');
-      if (thumb) { if (old) old.replaceWith(img); }
-      else if (!box.querySelector('video')) { box.innerHTML = ''; box.appendChild(img); }
-    };
-    img.src = `media/${id}.jpg`;
+  // 有可靈寫實照片（列在 media.js）就直接用照片，沒有才用手繪圖
+  function visual(key, art, thumb) {
+    if (!has('photo', key)) return art || '';
+    return `<img src="media/${key}.jpg" alt="" style="width:100%;height:100%;object-fit:cover;display:block;${thumb ? 'border-radius:14px;aspect-ratio:1/1' : ''}">`;
   }
   const api = (svg) => ({ svg, say, toast, sfx, later, NS: 'http://www.w3.org/2000/svg' });
 
@@ -234,19 +248,19 @@
     m.innerHTML = `
       <div class="card" role="dialog" aria-modal="true" aria-labelledby="cardTitle" style="--c:var(${item.c})">
         <div class="card-in">
-          <figure class="media">${item.art || ''}</figure>
+          <figure class="media">${visual(key, item.art)}</figure>
           <div><div class="kind">${item.kind}</div><h3 id="cardTitle">${item.name}</h3><ul>${item.points.map((p) => `<li>${p}</li>`).join('')}</ul></div>
         </div>
         <div class="card-bar"><button class="big-btn green small" data-c="again">🔊 再聽一次</button><button class="big-btn ghost small" data-c="close">關閉</button></div>
       </div>`;
     document.body.appendChild(m);
-    // 可靈寫實圖片：放了 media/<id>.jpg 就先換成照片
-    swapPhoto($('.media', m), key);
-    // 可靈影片：放了 media/<id>.mp4 就自動取代手繪圖或照片
-    const v = document.createElement('video');
-    v.muted = true; v.playsInline = true; v.loop = true; v.preload = 'auto';
-    v.addEventListener('loadeddata', () => { if (m.isConnected) { const f = $('.media', m); f.innerHTML = ''; f.appendChild(v); v.play().catch(() => {}); } }, { once: true });
-    v.src = `media/${key}.mp4`;
+    // 可靈影片（列在 media.js）會取代照片或手繪圖
+    if (has('video', key)) {
+      const v = document.createElement('video');
+      v.muted = true; v.playsInline = true; v.loop = true; v.autoplay = true; v.preload = 'auto';
+      v.addEventListener('loadeddata', () => { if (m.isConnected) { const f = $('.media', m); f.innerHTML = ''; f.appendChild(v); v.play().catch(() => {}); } }, { once: true });
+      v.src = `media/${key}.mp4`;
+    }
     const close = () => { m.remove(); stopTalk(); if (back) back.focus(); document.removeEventListener('keydown', esc); };
     const esc = (e) => { if (e.key === 'Escape') close(); };
     document.addEventListener('keydown', esc);

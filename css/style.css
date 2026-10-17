@@ -251,3 +251,35 @@ main {
 .ctrl .seg { padding: 7px 14px; border-radius: 999px; background: var(--card); border: 2px solid var(--line); font-weight: 800; font-size: .95rem; }
 .ctrl .seg.on { background: var(--moss); border-color: var(--moss-dark); color: #fff; }
 .readout { font-weight: 800; background: var(--card); border: 2px dashed var(--line); border-radius: 14px; padding: 8px 12px; font-variant-numeric: tabular-nums; }
+
+/* ---------- 月考範圍標示 ---------- */
+.exam-banner { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; background: #fff3f0; border: 3px solid var(--rose); border-radius: var(--radius); padding: 14px 18px; box-shadow: var(--shadow); }
+.exam-banner b { font-size: 1.25rem; color: var(--rose-dark); }
+.exam-banner .links { display: flex; gap: 8px; flex-wrap: wrap; }
+.exam-badge { display: inline-flex; align-items: center; gap: 4px; background: var(--rose); color: #fff; font-weight: 800; font-size: .85rem; border-radius: 999px; padding: 3px 12px; white-space: nowrap; }
+.unit.exam { border: 3px solid var(--rose); }
+
+/* ---------- 手機：字放大、卡片好讀 ---------- */
+@media (max-width: 700px) {
+  body { font-size: 18px; }
+  .card { border-radius: 22px; }
+  .card-in { padding: 14px; gap: 12px; }
+  .media { max-width: 100%; aspect-ratio: 4 / 3; }
+  .card .kind { font-size: 1rem; }
+  .card h3 { font-size: 2.3rem; }
+  .card ul { font-size: 1.3rem; line-height: 1.55; gap: 10px; }
+  .card-bar { padding: 0 14px 16px; }
+  .card-bar .big-btn { flex: 1; font-size: 1.1rem; padding: 12px 16px; }
+  .lesson-head p, .legend > p, .sec-head p { font-size: 1.05rem; }
+  .chip { font-size: 1.1rem; padding: 10px 16px; }
+  .facts { font-size: 1.05rem; grid-template-columns: 1fr; }
+  .drawers { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .drawer h3 { font-size: 1.3rem; }
+  .drawer .tag { font-size: .9rem; }
+  .readout { font-size: 1.05rem; }
+  .stage .hot text { font-size: 32px; stroke-width: 8px; }
+  .qtext { font-size: 1.4rem; }
+  .opt { font-size: 1.2rem; padding: 16px; }
+  .feedback { font-size: 1.15rem; }
+  .feedback b { font-size: 1.3rem; }
+}
