@@ -1,0 +1,170 @@
+/* 四年級下學期・森林遊俠營地：秋天森林營地主題（木頭棕＋琥珀橘＋苔綠＋米色營帳布） */
+:root{
+  --wood:#6b3f1f;--wood2:#8a5530;--wood-d:#4a2a12;--amber:#f29f2e;--amber-d:#c9771a;--amber-l:#fff0d4;
+  --moss:#5f8a2c;--moss-d:#456a1c;--moss-l:#e6f2d2;--canvas:#fbf4e6;--canvas-d:#ecd9b6;
+  --ink:#3a2614;--muted:#7d654b;--line:#e0caa4;--card:#fffdf8;
+  --ok:#3f9a3a;--ok-l:#e2f5dc;--bad:#d2453a;--bad-l:#fde4e0;--shadow:0 6px 0 #d9c19a,0 12px 26px rgba(74,42,18,.16);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
+body{color:var(--ink);overflow-x:hidden;
+  font-family:"Microsoft JhengHei","PingFang TC","Noto Sans TC","Heiti TC",sans-serif;
+  background:radial-gradient(circle at 15% 10%,#fff6dc 0,transparent 40%),linear-gradient(180deg,#ffe3b3 0%,#fbf0da 300px,#eef0d2 70%,#d6e4b4 100%);background-attachment:fixed}
+button{font-family:inherit;color:var(--ink);touch-action:manipulation;cursor:pointer}
+[hidden]{display:none!important}
+
+/* 森林背景：遠山的樹 */
+.woods{position:fixed;left:0;right:0;bottom:0;height:150px;pointer-events:none;z-index:0}
+.woods i{position:absolute;bottom:0;left:0;right:0;height:100%;
+  background:linear-gradient(135deg,transparent 50%,#7fa04a 50%) 0 100%/60px 60px repeat-x,linear-gradient(225deg,transparent 50%,#7fa04a 50%) 30px 100%/60px 60px repeat-x;opacity:.35}
+.woods i:nth-child(2){height:70%;opacity:.45;background-position:20px 100%,50px 100%;filter:hue-rotate(-20deg)}
+.woods i:nth-child(3){height:24px;background:#9a7a4a;opacity:.25}
+.leaf{position:fixed;top:-40px;left:12%;font-size:24px;z-index:0;pointer-events:none;animation:fall 17s linear infinite}
+.leaf.l2{left:78%;animation-duration:23s;animation-delay:-9s}
+@keyframes fall{0%{top:-40px;transform:translateX(0) rotate(0)}50%{transform:translateX(60px) rotate(180deg)}100%{top:105%;transform:translateX(-30px) rotate(360deg)}}
+
+/* 上方列：木頭招牌 */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:50;height:62px;display:flex;align-items:center;justify-content:space-between;gap:6px;
+  padding:0 10px;background:repeating-linear-gradient(0deg,var(--wood) 0 9px,var(--wood2) 9px 11px);border-bottom:5px solid var(--moss)}
+.topbar .left{display:flex;align-items:center;gap:8px}
+.grade-link{font-weight:900;font-size:15px;color:var(--wood);text-decoration:none;padding:8px 12px;border-radius:12px;background:var(--canvas);white-space:nowrap;box-shadow:0 3px 0 var(--canvas-d)}
+.grade-link:hover{background:#fff}
+.sem-pill{flex:none;font-weight:900;font-size:15px;padding:6px 14px;border-radius:8px;background:var(--amber);color:#fff;letter-spacing:2px;border:3px dashed #fff}
+#top-title{font-weight:900;font-size:19px;letter-spacing:1px;color:#fff6e0;flex:1;text-align:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;text-shadow:2px 2px 0 var(--wood-d)}
+.icon-btn{width:44px;height:44px;border-radius:12px;border:3px solid var(--canvas);background:var(--moss);color:#fff;font-size:20px;flex:none}
+#app{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:80px 14px 160px}
+
+/* 首頁 */
+.hero{text-align:center;padding:18px 12px 8px;position:relative}
+.ribbon{display:inline-block;font-weight:900;font-size:22px;letter-spacing:6px;color:#fff;background:var(--moss);padding:8px 30px;
+  clip-path:polygon(0 0,100% 0,94% 50%,100% 100%,0 100%,6% 50%);transform:rotate(-1.5deg)}
+.hero h1{font-size:40px;margin:14px 0 4px;color:var(--wood);text-shadow:3px 3px 0 #ffe0a6}
+.hero p{margin:4px 0;font-size:18px;font-weight:700;color:var(--muted)}
+.total{display:inline-block;margin-top:10px;padding:8px 18px;border-radius:12px;background:var(--card);border:3px solid var(--wood2);font-weight:900;font-size:18px;box-shadow:0 4px 0 var(--canvas-d)}
+.camp{margin:18px 0 10px;padding:14px;border-radius:22px;background:var(--canvas);border:4px solid var(--canvas-d);position:relative;
+  background-image:radial-gradient(#e7d3ad 1.2px,transparent 1.3px);background-size:16px 16px}
+.camp h2.route{margin:0 0 10px;text-align:center;font-size:20px;color:var(--wood)}
+.stations{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.station{background:var(--card);border-radius:18px;border:3px solid var(--wood2);box-shadow:var(--shadow);padding:14px;position:relative}
+.station .ph{display:flex;align-items:center;gap:12px}
+.badge{flex:none;width:72px;height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:var(--c);clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);color:#fff}
+.badge .em{font-size:28px;line-height:1}
+.badge .no{font-size:11px;font-weight:900}
+.station h2{margin:0;font-size:22px;color:var(--wood)}
+.station .sub{margin:2px 0 0;font-size:14px;color:var(--muted);font-weight:700}
+.lvs{display:grid;gap:8px;margin-top:12px}
+.lvbtn{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:10px 12px;border-radius:12px;border:2px solid var(--line);background:#fffaf0;box-shadow:0 3px 0 var(--line)}
+.lvbtn:hover{border-color:var(--amber);background:var(--amber-l)}
+.lvbtn .top{display:flex;justify-content:space-between;width:100%;align-items:center;gap:6px}
+.lvbtn .nm{font-weight:900;font-size:17px}
+.tag{font-size:13px;font-weight:900;padding:2px 8px;border-radius:6px;color:#fff;white-space:nowrap}
+.tag.op{background:var(--moss)}.tag.idea{background:var(--wood2)}.tag.boss{background:var(--bad)}
+.stars{color:#e89a00;font-size:18px;letter-spacing:1px;white-space:nowrap}
+.reset{display:block;margin:22px auto 6px;padding:8px 16px;border-radius:10px;border:2px solid var(--line);background:#fff;color:var(--muted);font-weight:700}
+.foot{text-align:center;color:var(--muted);font-size:14px;font-weight:700}
+
+/* 關卡頁 */
+.lvhead{background:var(--wood);color:#fff6e0;border-radius:18px;padding:14px 16px;border-left:12px solid var(--c,var(--amber));box-shadow:var(--shadow)}
+.crumb{font-size:14px;font-weight:700;opacity:.95}
+.crumb .sem{background:var(--amber);color:#fff;padding:2px 8px;border-radius:6px;font-weight:900}
+.level-title{font-size:28px;margin:6px 0 8px;color:#fff}
+.inst{display:flex;gap:10px;align-items:flex-start;font-size:17px;font-weight:700;line-height:1.6}
+.say{flex:none;width:40px;height:40px;border-radius:50%;border:2px solid var(--line);background:#fff;font-size:18px}
+.lvhead .say{border-color:var(--amber)}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 4px;font-weight:800;color:var(--muted)}
+.bar .miss b{color:var(--bad)}
+.panel{background:var(--card);border-radius:18px;border:3px solid var(--wood2);box-shadow:var(--shadow);padding:16px}
+.panel .bar{margin:0 0 10px}
+
+/* 拖曳卡 */
+.chip{display:inline-flex;align-items:center;gap:6px;margin:5px;padding:9px 12px;border-radius:12px;border:2px solid var(--wood2);background:#fff;font-weight:800;font-size:16px;
+  box-shadow:0 4px 0 var(--canvas-d);cursor:grab;user-select:none;touch-action:none}
+.chip .e{font-size:24px}
+.chip.picked{outline:4px solid var(--amber);background:var(--amber-l)}
+.chip.dragging{opacity:.35}
+.chip.ghost{position:fixed;z-index:999;pointer-events:none;margin:0;transform:scale(1.08) rotate(-2deg);box-shadow:0 10px 24px rgba(74,42,18,.35)}
+.chip.small{font-size:14px;padding:5px 8px;margin:3px;box-shadow:none;cursor:default;border-color:var(--ok);background:var(--ok-l)}
+.chip.small .e{font-size:20px}
+.pool{display:flex;flex-wrap:wrap;justify-content:center;min-height:60px;padding:8px;border-radius:14px;background:var(--canvas);border:2px dashed var(--line);margin-top:12px}
+.bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.bin{min-height:120px;border-radius:14px;border:3px dashed var(--bc,var(--moss));background:#fffcf4;padding:8px;text-align:center}
+.bin h3{margin:0 0 6px;font-size:17px}
+.bin.hi{background:var(--amber-l);border-style:solid}
+.shake{animation:shake .4s}
+@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+.pop{animation:pop .35s}
+@keyframes pop{50%{transform:scale(1.1)}}
+
+/* 選擇題 */
+.q{font-size:20px;font-weight:800;line-height:1.6;margin:4px 0 12px}
+.q .big{display:block;font-size:46px;text-align:center;margin:6px 0}
+.q .big svg{width:100%;max-width:360px;height:auto}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.opt{padding:13px;border-radius:12px;border:2px solid var(--line);background:#fffaf0;font-size:18px;font-weight:800;text-align:left;box-shadow:0 4px 0 var(--line)}
+.opt:hover{border-color:var(--amber)}
+.opt svg{width:100%;max-width:200px;height:auto;display:block;margin:0 auto}
+.opt.wrong{border-color:var(--bad);background:var(--bad-l);color:#962a20}
+.opt.right{border-color:var(--ok);background:var(--ok-l)}
+.opt.sel{border-color:var(--amber);background:var(--amber-l)}
+.opt:disabled{cursor:default}
+.why{margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--moss-l);border:2px solid var(--moss);font-size:17px;line-height:1.6;font-weight:700}
+.dots{display:flex;gap:6px}
+.dots i{width:14px;height:14px;border-radius:50%;background:#eadcc2;border:2px solid #fff;box-shadow:0 0 0 2px var(--line)}
+.dots i.on{background:var(--ok)}
+.dots i.cur{background:var(--amber)}
+.btn{display:inline-block;padding:12px 22px;border-radius:12px;border:none;background:var(--amber);color:#fff;font-size:18px;font-weight:900;box-shadow:0 5px 0 var(--amber-d)}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--amber-d)}
+.btn.alt{background:#fff;color:var(--wood);border:2px solid var(--wood2);box-shadow:0 5px 0 var(--canvas-d)}
+.btn.green{background:var(--moss);box-shadow:0 5px 0 var(--moss-d)}
+.btn.ok{background:var(--wood2);box-shadow:0 5px 0 var(--wood-d)}
+.btn:disabled{opacity:.4;cursor:default}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:center;margin-top:14px}
+
+/* 排序卡 */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.ocard{position:relative;border-radius:14px;border:2px solid var(--line);background:#fffaf0;padding:8px;text-align:center;font-weight:800;font-size:16px;box-shadow:0 4px 0 var(--line)}
+.ocard svg{width:100%;height:auto;display:block;max-height:150px}
+.ocard .num{position:absolute;top:-10px;right:-10px;width:34px;height:34px;border-radius:50%;background:var(--amber);color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:18px;border:3px solid #fff}
+.ocard.done{border-color:var(--ok);background:var(--ok-l)}
+.clue{padding:10px 12px;margin:6px 0;border-radius:12px;background:var(--canvas);border-left:6px solid var(--moss);font-weight:800;font-size:17px}
+
+/* 力的箭頭 */
+.arrowsvg,.bugsvg,.tanksvg{width:100%;max-width:620px;margin:0 auto;height:auto;display:block;border-radius:14px;background:#fffaf0;border:2px solid var(--line);touch-action:none}
+.ctrl{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center;margin-top:12px}
+.ctrl .grp{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:12px;background:var(--canvas);font-weight:900}
+.ctrl .grp .opt{padding:8px 12px;text-align:center;font-size:17px}
+.pt{cursor:pointer}
+.pt circle{fill:#fff;stroke:var(--wood2);stroke-width:3}
+.pt.sel circle{fill:var(--amber);stroke:var(--amber-d)}
+
+/* 組裝昆蟲 */
+.zone{cursor:pointer}
+.zone.hi circle,.zone.hi rect,.zone.hi ellipse{stroke:var(--amber);stroke-width:5}
+.partpool .chip{font-size:15px}
+
+/* 虹吸 */
+.ctrl input[type=range]{width:180px;accent-color:var(--amber)}
+.water{fill:#6fc3e8;opacity:.85}
+.flowing{stroke-dasharray:8 8;animation:flow .6s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-16}}
+
+/* 結果 */
+.result{text-align:center;padding:26px 16px}
+.result .bigstars{font-size:58px;letter-spacing:6px;margin:8px 0;color:#e89a00;text-shadow:3px 3px 0 #fff}
+.result h2{font-size:28px;margin:6px 0;color:var(--wood)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:100;max-width:min(92vw,560px);background:var(--wood);color:#fff6e0;
+  padding:12px 18px;border-radius:14px;font-size:17px;font-weight:800;line-height:1.5;box-shadow:0 8px 24px rgba(0,0,0,.3);border:3px solid var(--amber)}
+
+@media (max-width:600px){
+  .sem-pill{font-size:12px;padding:4px 8px;letter-spacing:1px}
+  .hero h1{font-size:30px}
+}
+@media (max-width:520px){
+  #top-title{font-size:15px}
+  .q{font-size:18px}.opt{font-size:16px}
+  .inst{font-size:16px}
+  .grade-link{font-size:13px;padding:6px 8px}
+  .icon-btn{width:38px;height:38px;font-size:17px}
+  .level-title{font-size:23px}
+}
