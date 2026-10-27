@@ -36,7 +36,7 @@
     stage.querySelector('#pointer').setAttribute('y1', y); stage.querySelector('#pointer').setAttribute('y2', y);
     const cm = Math.round((ext / 10)) ;
     const ro = document.querySelector('#springRead');
-    if (ro) ro.innerHTML = `掛了 <b>${wt}</b> 個砝碼（每個 10 g）　彈簧伸長 <b>${cm}</b> 公分<br>${wt > LIMIT ? '⚠️ 超過<b>彈性限度</b>了！拿下砝碼也回不去原來長度' : stretched ? '⚠️ 彈簧被拉壞了，回不到原本的長度' : wt ? '砝碼加倍，伸長量也加倍（成正比）' : '彈簧是原來的長度'}`;
+    if (ro) ro.innerHTML = `掛了 <b>${wt}</b> 個砝碼（每個 10 g）　彈簧伸長 <b>${cm}</b> 公分<br>${wt > LIMIT ? '⚠️ 超過<b>彈性限度</b>了！拿下砝碼也回不去原來長度' : stretched ? '⚠️ 彈簧被拉壞了，回不到原本的長度' : wt ? '砝碼數變 2 倍，伸長量也變 2 倍' : '彈簧是原來的長度'}`;
   }
   window.LESSONS.u4a = {
     id: 'u4a', no: '1', title: '力的測量', weeks: '16–17', clip: 'sports',
@@ -54,9 +54,9 @@
       { label: '🪢 拔河比賽', sub: '兩個力方向相反', c: '#c77d70', run(api) { const b = document.querySelector('.drawer[data-part="tug"]'); if (b) b.click(); } },
       { label: '🧲 不用碰也有力', sub: '磁力、地球引力', c: '#7aa9c0', run(api) { const b = document.querySelector('.drawer[data-part="magnet"]'); if (b) b.click(); } },
     ],
-    facts: [{ t: '成正比', d: '彈性限度內，重量加倍，伸長量也加倍', c: '--metal' }, { t: '重量', d: '地球吸引物體的力', c: '--root' }],
+    facts: [{ t: '越重伸越長', d: '彈性限度內，砝碼數變 2 倍，伸長量也變 2 倍', c: '--metal' }, { t: '重量', d: '地球吸引物體的力', c: '--root' }],
     parts: {
-      spring: { name: '彈簧', kind: '有彈性的物體', c: '--metal', say: '彈簧受到拉力會變長，拉力拿走後會恢復原狀，這就是彈性。在彈性限度內，掛的重量越重，彈簧伸得越長，而且重量加倍，伸長量也加倍。', points: ['受力會變形，放開會恢復', '重量越重，伸長越多', '重量和伸長量成正比'],
+      spring: { name: '彈簧', kind: '有彈性的物體', c: '--metal', say: '彈簧受到拉力會變長，拉力拿走後會恢復原狀，這就是彈性。在彈性限度內，掛的重量越重，彈簧伸得越長，而且砝碼數變成 2 倍，伸長量也變成 2 倍。', points: ['受力會變形，放開會恢復', '重量越重，伸長越多', '每多掛 1 個砝碼，就多伸長一樣長'],
         art: `<svg viewBox="0 0 320 200"><path d="M160 10 L140 25 L180 40 L140 55 L180 70 L140 85 L180 100 L160 115" fill="none" stroke="var(--metal)" stroke-width="6"><animateTransform attributeName="transform" type="scale" values="1 1;1 1.4;1 1" dur="2s" repeatCount="indefinite"/></path></svg>` },
       weight: { name: '砝碼', kind: '已知重量的物體', c: '--root', say: '砝碼是知道重量的金屬塊。掛一個、兩個、三個砝碼，比較彈簧伸長了多少，就能找出重量和伸長量的關係。', points: ['重量已知，用來做實驗', '一個一個加，記錄伸長量', '重量就是地球對物體的引力'],
         art: `<svg viewBox="0 0 320 200">${[0, 1, 2].map((i) => `<rect x="${70 + i * 70}" y="${120 - i * 30}" width="50" height="${40 + i * 30}" rx="6" fill="var(--root)"/>`).join('')}</svg>` },
@@ -78,7 +78,7 @@
     drawers: [{ title: '更多力的秘密', desc: '彈簧的極限、兩個力的比賽、還有不用碰也有的力。', ids: ['limit', 'fatigue', 'tug', 'magnet', 'tools'] }],
     quiz: [
       { lv: '點圖', q: '在圖上點出「用來測量力的大小」的工具。', tap: 'scale', why: '彈簧秤利用彈簧伸長量來測量力。' },
-      { lv: '推理', q: '掛 1 個砝碼，彈簧伸長 2 公分；在彈性限度內掛 3 個，會伸長幾公分？', opts: ['2 公分', '4 公分', '6 公分', '8 公分'], a: 2, why: '重量和伸長量成正比：3 × 2 ＝ 6 公分。' },
+      { lv: '推理', q: '掛 1 個砝碼，彈簧伸長 2 公分；在彈性限度內掛 3 個，會伸長幾公分？', opts: ['2 公分', '4 公分', '6 公分', '8 公分'], a: 2, why: '每掛 1 個砝碼伸長 2 公分，掛 3 個就是 3 × 2 ＝ 6 公分。' },
       { lv: '理解', q: '什麼是「彈性限度」？', opts: ['彈簧的長度', '彈簧能承受的最大力量', '彈簧的顏色', '砝碼的重量'], a: 1, why: '超過彈性限度，彈簧就回不到原狀。' },
       { lv: '理解', q: '橡皮筋綁東西綁太久，變得鬆鬆的回不去，這叫做？', opts: ['彈性限度', '彈性疲乏', '摩擦力', '磁力'], a: 1, why: '受力時間太長，也會無法恢復原狀，叫彈性疲乏。' },
       { lv: '操作', q: '使用彈簧秤之前，第一步要做什麼？', opts: ['用力拉一下', '歸零', '掛最重的東西', '放進水裡'], a: 1, why: '先歸零，量出來的數字才準確。' },

@@ -152,7 +152,7 @@
 
   window.LESSONS.u2b = {
     id: 'u2b', no: '2–3', title: '植物的繁殖與人類生活', weeks: '8–9', clip: 'fruit',
-    intro: '花是植物生寶寶的地方。看蜜蜂怎麼幫花傳花粉，花又怎麼變成果實；再看看人怎麼利用植物、向植物學點子。',
+    intro: '花是植物生寶寶的地方。看蜜蜂怎麼幫花傳花粉，花又怎麼變成果實、種子怎麼去旅行；再看看人怎麼利用植物、向植物學點子。',
     svg: flowerSVG,
     chips: ['petal', 'sepal', 'stamen', 'stigma', 'ovary'],
     parts: {
@@ -168,7 +168,7 @@
         art: `<svg viewBox="0 0 320 200"><path d="M40 170 C30 120 50 90 80 90 C110 90 130 120 120 170Z" fill="var(--leaf)"/><ellipse cx="80" cy="140" rx="8" ry="11" fill="var(--card)"/><path d="M140 130 h40 M170 120 l12 10 l-12 10" stroke="var(--muted)" stroke-width="4" fill="none"/><ellipse cx="250" cy="125" rx="56" ry="64" fill="var(--fruit)"/><g fill="var(--root)"><ellipse cx="236" cy="115" rx="8" ry="12"/><ellipse cx="264" cy="115" rx="8" ry="12"/><ellipse cx="250" cy="145" rx="8" ry="12"/></g></svg>` },
       insect: { name: '昆蟲傳粉', kind: '傳粉幫手・蜜蜂、蝴蝶', c: '--flower', say: '蜜蜂和蝴蝶來吸花蜜時，身上會沾到花粉，飛到下一朵花時就把花粉帶到柱頭上。靠昆蟲傳粉的花，通常顏色鮮豔、有香味、有花蜜。', points: ['花顏色鮮豔、有香味、有花蜜', '昆蟲身上沾了花粉帶到別朵花', '例子：油菜花、向日葵'],
         art: `<svg viewBox="0 0 160 110"><g transform="translate(60 62)">${petals(0, 0, 22, 'var(--flower)')}<circle r="9" fill="var(--sunc)"/></g><g transform="translate(118 36)"><ellipse rx="12" ry="8" fill="var(--sunc)"/><path d="M0 -8 v8 M5 -8 v8" stroke="var(--ink)" stroke-width="2"/><ellipse cx="-3" cy="-10" rx="7" ry="5" fill="var(--card)"/></g></svg>` },
-      wind: { name: '風力傳粉', kind: '傳粉幫手・玉米、稻子', c: '--stem', say: '玉米和稻子的花很小，不鮮豔也沒有香味，但是會產生很多又輕又小的花粉，讓風把花粉吹到別的花上。', points: ['花小、不鮮豔、沒有香味', '花粉又多又輕', '例子：玉米、稻子、松樹'],
+      wind: { name: '風力傳粉', kind: '傳粉幫手・玉米、稻子', c: '--stem', say: '玉米和稻子的花很小，不鮮豔也沒有香味，但是會產生很多又輕又小的花粉，讓風把花粉吹到別的花上。', points: ['花小、不鮮豔、沒有香味', '花粉又多又輕', '例子：玉米、稻子、芒草'],
         art: `<svg viewBox="0 0 160 110"><path d="M60 110 V30" stroke="var(--stem)" stroke-width="5"/><path d="M60 30 l-14 -18 M60 30 l0 -22 M60 30 l14 -18" stroke="var(--fruit)" stroke-width="3"/><path d="M60 70 C40 60 30 50 24 36 M60 80 C80 70 90 60 100 48" stroke="var(--leaf)" stroke-width="4" fill="none"/><g fill="var(--sunc)">${[0, 1, 2, 3].map((i) => `<circle cx="${80 + i * 18}" cy="${20 + i * 6}" r="3"/>`).join('')}</g><path d="M90 40 q20 -10 40 0 M96 54 q20 -10 40 0" stroke="var(--muted)" stroke-width="2" fill="none"/></svg>` },
       bird: { name: '鳥類傳粉', kind: '傳粉幫手・綠繡眼', c: '--leaf', say: '有些鳥像綠繡眼，會把頭伸進花裡吸花蜜，頭上的羽毛沾到花粉，就幫花傳粉了。', points: ['鳥吸花蜜時頭上沾到花粉', '飛到別朵花時把花粉帶過去', '例子：綠繡眼吸木棉的花蜜'],
         art: `<svg viewBox="0 0 160 110"><g transform="translate(46 60)">${petals(0, 0, 20, 'var(--acid)')}<circle r="8" fill="var(--sunc)"/></g><g transform="translate(110 56)"><ellipse rx="24" ry="16" fill="var(--leaf)"/><circle cx="-18" cy="-8" r="11" fill="var(--leaf)"/><circle cx="-21" cy="-10" r="4" fill="var(--card)"/><circle cx="-21" cy="-10" r="2" fill="var(--ink)"/><path d="M-28 -8 l-14 2" stroke="var(--ink)" stroke-width="3"/></g></svg>` },
@@ -186,6 +186,20 @@
         art: `<svg viewBox="0 0 160 110"><g stroke="var(--root)" stroke-width="3" stroke-linecap="round">${[0, 1, 2, 3, 4].map((i) => `<path d="M${40 + i * 10} 90 L${30 + i * 14} 30 M${30 + i * 14} 30 l-4 -6 M${30 + i * 14} 30 l4 -6"/>`).join('')}</g><g stroke="var(--muted)" stroke-width="2" fill="none">${[0, 1, 2, 3].map((i) => `<path d="M${110 + i * 10} 90 v-14 a4 4 0 0 1 8 0"/>`).join('')}</g></svg>` },
       lotusleaf: { name: '防水材料', kind: '向植物學點子・荷葉', c: '--water', say: '下雨後，荷葉上的水會變成一顆顆水珠滾下去，順便把灰塵帶走，因為荷葉表面有很多非常細小的突起。人們學它，做出防水又不容易髒的材料。', points: ['荷葉表面有很細小的突起', '水變成水珠滾走，帶走灰塵', '人學它做出防水、防髒的材料'],
         art: `<svg viewBox="0 0 160 110"><ellipse cx="80" cy="70" rx="70" ry="26" fill="var(--leaf)"/><path d="M80 70 L80 108" stroke="var(--stem)" stroke-width="4"/><g fill="var(--water)" opacity=".85"><circle cx="60" cy="58" r="7"><animate attributeName="cx" values="60;140" dur="3s" repeatCount="indefinite"/></circle><circle cx="96" cy="62" r="5"/><circle cx="40" cy="66" r="4"/></g></svg>` },
+      burst: { name: '彈力傳播', kind: '種子去旅行・鳳仙花、綠豆', c: '--fruit', say: '鳳仙花和綠豆的果實成熟乾掉以後，會突然裂開，把種子彈到旁邊比較遠的地方。', points: ['果實成熟後突然裂開', '靠自己的彈力把種子彈出去', '例子：鳳仙花、綠豆、豌豆'],
+        art: `<svg viewBox="0 0 160 110"><path d="M80 108 V60" stroke="var(--stem)" stroke-width="4"/><path d="M80 60 C60 50 52 30 62 14 M80 60 C100 50 108 30 98 14" stroke="var(--leaf)" stroke-width="7" fill="none" stroke-linecap="round"/><g fill="var(--root)">${[[40, 30], [124, 24], [30, 60], [134, 58]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5"/>`).join('')}</g><path d="M50 30 h-4 M114 24 h4 M40 60 h-4 M124 58 h4" stroke="var(--muted)" stroke-width="2"/></svg>` },
+      windseed: { name: '風力傳播', kind: '種子去旅行・蒲公英、青楓', c: '--sky-dark', say: '蒲公英的種子上有像降落傘一樣的白色冠毛，青楓的果實有翅膀，風一吹就能飄到很遠的地方。', points: ['種子又小又輕', '有冠毛或翅膀，可以被風吹走', '例子：蒲公英、青楓、昭和草'],
+        art: `<svg viewBox="0 0 160 110"><path d="M40 108 V50" stroke="var(--stem)" stroke-width="3"/><circle cx="40" cy="40" r="16" fill="none" stroke="var(--muted)" stroke-width="2" stroke-dasharray="3 3"/>${[[90, 40], [120, 22], [140, 52]].map(([x, y]) => `<g transform="translate(${x} ${y})"><path d="M0 0 v14" stroke="var(--root)" stroke-width="2"/>${[-40, -20, 0, 20, 40].map((r) => `<path d="M0 0 l0 -10" stroke="var(--muted)" stroke-width="1.5" transform="rotate(${r})"/>`).join('')}</g>`).join('')}<path d="M60 70 q20 -8 40 0 M70 86 q20 -8 40 0" stroke="var(--muted)" stroke-width="2" fill="none"/></svg>` },
+      waterseed: { name: '水力傳播', kind: '種子去旅行・椰子、棋盤腳', c: '--water', say: '椰子的果實外面有很厚、很輕的纖維，可以浮在海上漂流，漂到別的海岸再發芽長大。', points: ['果實很輕、可以浮在水上', '跟著海水或河水漂到遠方', '例子：椰子、棋盤腳、蓮蓬'],
+        art: `<svg viewBox="0 0 160 110"><rect y="64" width="160" height="46" fill="var(--water)" opacity=".5"/><path d="M0 64 q20 -8 40 0 t40 0 t40 0 t40 0" stroke="var(--water)" stroke-width="3" fill="none"/><ellipse cx="80" cy="62" rx="24" ry="18" fill="var(--root)"/><ellipse cx="74" cy="56" rx="6" ry="4" fill="var(--card)" opacity=".5"/><path d="M110 50 h24 l-6 -6 M134 50 l-6 6" stroke="var(--muted)" stroke-width="2" fill="none"/></svg>` },
+      animalseed: { name: '動物傳播', kind: '種子去旅行・大花咸豐草、榕樹', c: '--root', say: '大花咸豐草的果實有倒鉤刺，會鉤在動物的毛上被帶走；鳥吃了榕樹的果實，種子會跟著糞便排出，掉在別的地方發芽。', points: ['果實有鉤刺，黏在動物身上', '果實被動物吃掉，種子隨糞便排出', '例子：大花咸豐草、榕樹、蒼耳'],
+        art: `<svg viewBox="0 0 160 110"><ellipse cx="96" cy="66" rx="50" ry="30" fill="var(--wood)"/><circle cx="46" cy="52" r="18" fill="var(--wood)"/><circle cx="40" cy="48" r="3" fill="var(--ink)"/><g stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round">${[[86, 40], [104, 38], [120, 44]].map(([x, y]) => `<path d="M${x} ${y + 8} L${x} ${y - 10} M${x} ${y - 10} l-4 -5 M${x} ${y - 10} l4 -5"/>`).join('')}</g></svg>` },
+      stemprop: { name: '用莖繁殖', kind: '不用種子也能繁殖・吊蘭、馬鈴薯', c: '--stem', say: '吊蘭會長出走莖，末端長出小吊蘭；馬鈴薯的芽眼會發芽；剪一段黃金葛或萬年青的莖插在水裡，也會長根變成新植物。', points: ['用莖長出新的植物', '例子：吊蘭、馬鈴薯', '例子：黃金葛、萬年青（剪莖插水或插土）'],
+        art: `<svg viewBox="0 0 160 110"><rect x="20" y="40" width="40" height="66" rx="6" fill="var(--water)" opacity=".45" stroke="var(--muted)" stroke-width="2"/><path d="M40 106 V20" stroke="var(--stem)" stroke-width="4"/><ellipse cx="54" cy="24" rx="14" ry="8" fill="var(--leaf)" transform="rotate(-20 54 24)"/><path d="M40 98 l-8 8 M40 98 l8 8 M40 92 l-10 4" stroke="var(--root)" stroke-width="2"/><ellipse cx="116" cy="74" rx="30" ry="22" fill="var(--sunc)" opacity=".85"/><circle cx="104" cy="66" r="3" fill="var(--root)"/><path d="M104 66 q-2 -14 6 -22" stroke="var(--leaf)" stroke-width="3" fill="none"/></svg>` },
+      leafprop: { name: '用葉繁殖', kind: '不用種子也能繁殖・落地生根、石蓮', c: '--leaf', say: '落地生根的葉子邊緣會長出小芽和小根，葉子掉到土上就能長成新植物。石蓮的葉子放在土上，也會長出新的小植株。', points: ['用葉子長出新的植物', '落地生根：葉緣長出小芽', '石蓮：葉子放在土上會長根發芽'],
+        art: `<svg viewBox="0 0 160 110"><rect y="86" width="160" height="24" fill="var(--soil)"/><path d="M20 80 C50 50 110 50 140 80 C110 92 50 92 20 80Z" fill="var(--leaf)"/>${[40, 62, 84, 106, 126].map((x) => `<g transform="translate(${x} ${x === 40 || x === 126 ? 76 : 62})"><path d="M0 0 q-5 -10 0 -16 q5 6 0 16" fill="var(--stem)"/><path d="M0 2 v8" stroke="var(--root)" stroke-width="1.5"/></g>`).join('')}</svg>` },
+      rootprop: { name: '用根繁殖', kind: '不用種子也能繁殖・番薯', c: '--root', say: '番薯是塊根，把番薯放在潮濕的地方，它會長出新芽和葉子，切下來種就能長成新的番薯藤。', points: ['用根長出新的植物', '番薯（塊根）會長出新芽', '剪下番薯藤種下去也能繁殖'],
+        art: `<svg viewBox="0 0 160 110"><ellipse cx="80" cy="74" rx="50" ry="24" fill="var(--flower)" transform="rotate(-8 80 74)"/><path d="M70 54 q-6 -20 4 -38 M92 52 q6 -18 -2 -34" stroke="var(--stem)" stroke-width="3" fill="none"/><ellipse cx="74" cy="16" rx="10" ry="6" fill="var(--leaf)"/><ellipse cx="90" cy="18" rx="10" ry="6" fill="var(--leaf)"/><path d="M40 88 l-10 14 M120 80 l12 14" stroke="var(--root)" stroke-width="2"/></svg>` },
     },
     actions: [
       { label: '🐝 蜜蜂來授粉', sub: '花粉從雄蕊送到柱頭', c: '#c06a8e', run(api) {
@@ -206,6 +220,8 @@
     facts: [{ t: '雄蕊', d: '花藥 + 花絲，花藥裡有花粉', c: '--root' }, { t: '雌蕊', d: '柱頭 + 花柱 + 子房，子房裡有胚珠', c: '--leaf' }],
     drawers: [
       { title: '誰來幫忙傳花粉？', desc: '花自己不會走路，要靠別人幫忙把花粉送到柱頭上。', ids: ['insect', 'wind', 'bird', 'hand'] },
+      { title: '種子怎麼去旅行？', desc: '不同外形的果實和種子，靠彈力、風、水或動物傳播到遠方。', ids: ['burst', 'windseed', 'waterseed', 'animalseed'] },
+      { title: '不用種子也能繁殖', desc: '有些植物可以用根、莖、葉長出新的植物。', ids: ['stemprop', 'leafprop', 'rootprop'] },
       { title: '植物與人類生活', desc: '人會保存好品種、改良出新品種，還會向植物學點子做出新發明。', ids: ['orchid', 'atemoya', 'mango', 'tea', 'velcro', 'lotusleaf'] },
     ],
     quiz: [
