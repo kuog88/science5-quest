@@ -34,6 +34,9 @@ G.types.spot = function (lv, area, api) {
     area.querySelectorAll('.spot').forEach(function (g) {
       g.addEventListener('click', function () {
         if (solved) return;
+        var NM = { up: '上游', out: '凹岸', 'in': '凸岸', down: '下游', mouth: '河口' };
+        var lab = function (id) { var k = G.riverSpots.map(function (s) { return s.id; }).indexOf(id); return 'ABCDE'[k] + ' 點（' + NM[id] + '）'; };
+        G.rep(g.dataset.id === R.ans, '看河流地圖找位置：' + R.prompt, '點了 ' + lab(g.dataset.id), lab(R.ans));
         if (g.dataset.id === R.ans) {
           solved = true; G.sfx.ok(); g.classList.add('on');
           var w = G.$('.why', area); w.innerHTML = '✅ ' + R.why; w.hidden = false; G.$('.row', area).hidden = false;
