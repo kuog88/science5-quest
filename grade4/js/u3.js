@@ -53,6 +53,7 @@ G.types.mirror = function (lv, area, api) {
     G.$('.fire', area).onclick = function () {
       if (busy) return;
       var b = G.traceBeam(P, mir); draw(b);
+      G.rep(b.hit, '鏡子反射迷宮第 ' + (r + 1) + ' 關：轉動鏡子，讓手電筒的光照到星星', b.hit ? '光照到星星' : '開燈後光沒有照到星星', '轉好鏡子，讓光反射照到星星');
       if (b.hit) {
         busy = true; G.sfx.ok(); msg.innerHTML = '✅ 照到星星了！光走直線，碰到鏡子就會<b>反射</b>轉彎。';
         G.$('.fire', area).hidden = true; G.$('.nx', area).hidden = false;
