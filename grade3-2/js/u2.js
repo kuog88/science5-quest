@@ -67,7 +67,8 @@ G.types.waterlab = function (lv, area, api) {
     b.onclick = function () { temp = Math.max(-10, Math.min(110, temp + +b.dataset.d)); G.sfx.tick(); draw(); };
   });
   G.$('.chk', area).onclick = function () {
-    var M = missions[m];
+    var M = missions[m], SN = { ice: '冰', water: '水', boil: '沸騰' };
+    G.rep(G.waterState(temp) === M.want, '冰水蒸氣實驗：' + M.t, '調到 ' + temp + '°C（' + SN[G.waterState(temp)] + '）就按完成', '調到' + (M.want === 'ice' ? ' 0°C 以下（冰）' : M.want === 'boil' ? ' 100°C 以上（沸騰）' : ' 0～100°C 之間（水）'));
     if (G.waterState(temp) === M.want) {
       G.sfx.ok(); G.toast('✅ ' + M.ok, 3000); m++;
       if (m < missions.length) showMission();
