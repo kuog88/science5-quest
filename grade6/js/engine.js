@@ -4,10 +4,13 @@ var G = { units: [], types: {} };
 G.$ = function (s, r) { return (r || document).querySelector(s); };
 G.esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
 G.shuffle = function (a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; };
-G.starsByMiss = function (m, a, b) { a = a == null ? 0 : a; b = b == null ? 2 : b; return m <= a ? 3 : m <= b ? 2 : 1; };
+/* 星星規則（自然各年級一致，見 README）：答對率 = 答對次數 ÷（答對次數 + 失誤次數）
+   85% 以上 3 顆、65% 以上 2 顆、40% 以上 1 顆、未滿 40% 不給星（未過關）；純探索、沒有作答的關卡算全對 */
+G.score = { ok: 0 };
+G.starsByRate = function (ok, miss) { var t = ok + miss, p = t ? ok / t : 1; return p >= 0.85 ? 3 : p >= 0.65 ? 2 : p >= 0.4 ? 1 : 0; };
 G.starText = function (n) { return '★★★'.slice(0, n) + '☆☆☆'.slice(0, 3 - n); };
 /* 家長報表：每次作答記一筆（q 題目、a 孩子的答案、c 正確答案；沒載入 parent-report.js 就略過） */
-G.rep = function (ok, q, a, c) { if (window.KGReport) KGReport.answer(ok, { q: q, a: a, c: c }); };
+G.rep = function (ok, q, a, c) { if (ok) G.score.ok++; if (window.KGReport) KGReport.answer(ok, { q: q, a: a, c: c }); };
 
 /* ---------- 進度 ---------- */
 G.KEY = 'science-g6-progress';
@@ -198,7 +201,7 @@ G.types.order = function (lv, area, api) {
         if (+b.dataset.k !== next) G.rep(false, '排順序：' + R.prompt, '第 ' + (next + 1) + ' 個點了「' + R.items[+b.dataset.k].t + '」', seq);
         else if (next === R.items.length - 1) G.rep(true, '排順序：' + R.prompt, seq, seq);
         if (+b.dataset.k === next) {
-          G.sfx.ok(); b.classList.add('done'); next++;
+          G.sfx.ok(); b.classList.add('done'); if (next < R.items.length - 1) G.score.ok++; next++; // 最後一張由 G.rep(true) 計分
           b.insertAdjacentHTML('beforeend', '<span class="num">' + next + '</span>'); G.bump(b, 'pop');
           if (next === R.items.length) {
             var w = G.$('.why', area); w.innerHTML = '✅ ' + (R.why || '排對了！'); w.hidden = false;
