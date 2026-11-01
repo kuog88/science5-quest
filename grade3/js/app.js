@@ -14,7 +14,7 @@
     G.$('#top-title').textContent = '三上自然探險島';
     var t = total();
     app.innerHTML = '<section class="hero"><h1><span class="bob">🌱</span> 三上自然探險島 <span class="bob">🧲</span></h1>' +
-      '<p>五福國小・三年級上學期・南一版自然（第一冊）</p>' +
+      '<p>三年級上學期・南一版自然（第一冊）</p>' +
       '<div class="total">⭐ 星星 <b>' + t[0] + '</b> / ' + t[1] + '</div></section>' +
       '<div class="grid">' + G.units.map(function (u) {
         return '<div class="ucard" style="--c:' + u.c + '"><h2><span class="em">' + u.e + '</span>' + u.name + '</h2><p class="sub">' + u.sub + '</p>' +

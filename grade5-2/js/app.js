@@ -17,7 +17,7 @@
     var t = total();
     app.innerHTML = '<section class="hero"><div class="ribbon">⚓ 下學期 ⚓</div>' +
       '<h1 class="home-title">🚢 藍海探索號</h1>' +
-      '<p>五福國小・五年級<b style="color:var(--coral)">下學期</b>・南一版自然</p>' +
+      '<p>五年級<b style="color:var(--coral)">下學期</b>・南一版自然</p>' +
       '<p>登上科學研究船，航向四座研究港，完成每一項調查任務！</p>' +
       '<div class="total">⭐ 收集星星 <b>' + t[0] + '</b> / ' + t[1] + '</div></section>' +
       '<div class="chart"><h2 class="route">🗺️ 本學期航線</h2><div class="ports">' + G.units.map(function (u) {

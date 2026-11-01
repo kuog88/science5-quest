@@ -17,7 +17,7 @@
     var t = total();
     app.innerHTML = '<section class="hero"><div class="ribbon">🍁 下學期 🍁</div>' +
       '<h1 class="home-title">⛺ 森林遊俠營地</h1>' +
-      '<p>五福國小・四年級<b style="color:var(--bad)">下學期</b>・南一版自然</p>' +
+      '<p>四年級<b style="color:var(--bad)">下學期</b>・南一版自然</p>' +
       '<p>背起背包當自然遊俠，走完營地四個站點，收集每一枚徽章！</p>' +
       '<div class="total">⭐ 收集星星 <b>' + t[0] + '</b> / ' + t[1] + '</div></section>' +
       '<div class="camp"><h2 class="route">🧭 本學期營地路線</h2><div class="stations">' + G.units.map(function (u) {

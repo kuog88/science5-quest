@@ -25,7 +25,7 @@
     var t = total();
     app.innerHTML = '<section class="hero"><div class="ribbon">★ 下學期 ★</div>' +
       '<h1>🔭 星光科學觀測站</h1>' +
-      '<p>五福國小・三年級<b style="color:var(--pink)">下學期</b>・南一版自然（第二冊）</p>' +
+      '<p>三年級<b style="color:var(--pink)">下學期</b>・南一版自然（第二冊）</p>' +
       '<div class="total">⭐ 收集星星 <b>' + t[0] + '</b> / ' + t[1] + '</div></section>' +
       '<div class="stations">' + G.units.map(function (u) {
         return '<div class="station" style="--c:' + u.c + '"><div class="planet"><span class="em">' + u.e + '</span><span class="no">單元' + u.no + '</span></div>' +
