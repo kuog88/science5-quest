@@ -295,6 +295,9 @@
     save.recent[key] = pool.map((q) => q.q);
     persist();
     game = { lesson, unit, qs: pool, i: 0, right: 0, wrong: [], hearts: 3, marks: [] };
+    // 家長報表：進入關卡（例如「1-2 闖關：認識光的現象與特性」「2-魔王 落葉魔王關」）
+    const ru = unit || unitOf(lesson.id), rn = UNITS.indexOf(ru) + 1;
+    if (window.KGReport) KGReport.level(lesson ? `${rn}-${lesson.no} 闖關：${lesson.title}` : `${rn}-魔王 ${unit.boss.name}`, `第 ${rn} 單元 ${ru.name}`);
     setTitle(lesson ? `闖關：${lesson.title}` : `${unit.boss.name}`);
     showQ();
   }
@@ -353,6 +356,11 @@
       if (!ok) el.classList.add('wrong');
       rightTxt = q._opts.find((o) => o.ok).t;
     }
+    // 家長報表：點圖題記點到的部位名稱，選擇題記選項文字
+    if (window.KGReport) {
+      const picked = q.tap ? (q.lesson.parts[el.dataset.id] || {}).name || el.dataset.id : q._opts[+el.dataset.i].t;
+      KGReport.answer(ok, { q: q.tap ? `看圖點選：${q.q}` : q.q, a: q.tap ? `點了「${picked}」` : picked, c: q.tap ? `點「${rightTxt}」` : rightTxt });
+    }
     $('#fb').innerHTML = `<div class="feedback ${ok ? 'ok' : 'no'}"><b>${ok ? '⭕ 答對了！' : `❌ 答案是「${rightTxt}」`}</b>${q.why}</div>`;
     say((ok ? '答對了！' : '答案是' + rightTxt + '。') + q.why);
     if (g.unit) { const h = $('.hearts'); if (h) h.innerHTML = '❤️'.repeat(g.hearts) + '🤍'.repeat(3 - g.hearts); }
@@ -367,6 +375,7 @@
     const passed = g.unit ? g.hearts > 0 : g.right >= 6;
     const miss = g.wrong.length;
     const stars = g.unit ? g.hearts : miss === 0 ? 3 : miss <= 2 ? 2 : 1;
+    if (window.KGReport) KGReport.done({ stars: passed ? stars : 0, right: g.right, total: g.unit ? g.i : n });
     if (passed) {
       if (g.lesson) save.stars[g.lesson.id] = Math.max(save.stars[g.lesson.id] || 0, stars);
       else save.boss[g.unit.id] = Math.max(save.boss[g.unit.id] || 0, stars);

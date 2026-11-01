@@ -79,6 +79,7 @@ G.types.poleGuess = function (lv, area, api) {
     area.querySelectorAll('.ans').forEach(function (b) {
       b.onclick = function () {
         if (!tested) return;
+        G.rep(b.dataset.p === p2, '神祕磁鐵：左邊磁鐵靠近的是 ' + face + ' 極，推過去後' + (face === p2 ? '互相推開' : '吸在一起') + '，右邊磁鐵靠近左邊的那一端是什麼極？', b.dataset.p + ' 極', p2 + ' 極');
         if (b.dataset.p === p2) {
           G.sfx.ok(); still(false);
           area.querySelectorAll('.ans').forEach(function (x) { x.disabled = true; }); G.$('.push', area).disabled = true;

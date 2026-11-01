@@ -45,6 +45,7 @@ G.types.plantLabel = function (lv, area, api) {
     var c = document.createElement('div'); c.className = 'chip'; c.innerHTML = '<span>' + parts[k].t + '</span>'; pool.appendChild(c);
     G.makeDrag(c, function (chip, box) {
       if (box.classList.contains('done')) return;
+      G.rep(+box.dataset.k === k, '植物身體拼圖：「' + parts[k].t + '」是植物的哪個部位？', '把「' + parts[k].t + '」放到「' + parts[+box.dataset.k].t + '」的位置', '放到「' + parts[k].t + '」的位置');
       if (+box.dataset.k === k) {
         G.sfx.ok(); box.textContent = parts[k].t; box.classList.add('done'); G.bump(box, 'pop'); chip.remove();
         left--; G.$('.left', area).textContent = left;
