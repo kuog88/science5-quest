@@ -38,6 +38,7 @@
 
   function level(u, i) {
     var lv = u.levels[i], miss = 0, done = false;
+    G.score = { ok: 0 };
     G.unpick();
     G.$('#top-title').textContent = '下學期・' + u.e + ' ' + u.name;
     document.title = lv.name + '｜四年級下學期・森林遊俠營地';
@@ -53,15 +54,14 @@
       miss: function () { if (done) return; miss++; var b = G.$('.miss b', app); if (b) b.textContent = miss; },
       finish: function () {
         if (done) return; done = true;
-        var th = lv.th || [0, 2];
-        var s = G.starsByMiss(miss, th[0], th[1]);
-        G.setStars(lvId(u, i), s); G.sfx.win();
+        var ok = G.score.ok, s = G.starsByRate(ok, miss), rate = ok + miss ? Math.round(ok / (ok + miss) * 100) : 100;
+        if (s) { G.setStars(lvId(u, i), s); G.sfx.win(); } else G.sfx.bad();
         if (window.KGReport) KGReport.done({ stars: s });
         var nxt = i + 1 < u.levels.length ? '#/' + u.id + '/' + (i + 1) : null;
         if (!nxt) { var ui = G.units.indexOf(u); if (ui + 1 < G.units.length) nxt = '#/' + G.units[ui + 1].id + '/0'; }
-        var msg = s === 3 ? '完美通關，拿到金徽章！' : s === 2 ? '很棒！再挑戰三顆星吧！' : '過關了！多練習會更厲害喔！';
-        area.innerHTML = '<div class="panel result"><div style="font-size:64px">' + (s === 3 ? '🏅' : s === 2 ? '🎒' : '🥾') + '</div>' +
-          '<div class="bigstars">' + G.starText(s) + '</div><h2>' + msg + '</h2><p>失誤次數：' + miss + '</p>' +
+        var msg = s === 0 ? '答對的還不到四成，這次沒有過關。先看重點整理，再挑戰一次！' : s === 3 ? (miss ? '幾乎全對，太厲害了！' : '完美通關，拿到金徽章！') : s === 2 ? '很棒！再挑戰三顆星吧！' : '過關了！多練習會更厲害喔！';
+        area.innerHTML = '<div class="panel result"><div style="font-size:64px">' + (s === 0 ? '💪' : s === 3 ? '🏅' : s === 2 ? '🎒' : '🥾') + '</div>' +
+          '<div class="bigstars">' + G.starText(s) + '</div><h2>' + msg + '</h2><p>答對 ' + ok + ' 次、失誤 ' + miss + ' 次（答對率 ' + rate + '%）</p>' +
           (lv.recap ? '<div class="why" style="text-align:left">📓 遊俠筆記：' + lv.recap + '</div>' : '') +
           '<div class="row"><button class="btn alt again">🔁 再玩一次</button>' + (nxt ? '<button class="btn nx">下一關 ➜</button>' : '') + '<button class="btn green map">🗺️ 回營地地圖</button></div></div>';
         G.$('.again', area).onclick = function () { level(u, i); };
