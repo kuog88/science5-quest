@@ -41,7 +41,8 @@
     G.unpick();
     G.$('#top-title').textContent = '下學期・' + u.e + ' ' + u.name;
     document.title = lv.name + '｜五年級下學期・藍海探索號';
-    var k = KIND[lv.kind];
+    var k = KIND[lv.kind], uNo = u.id.replace(/\D/g, '');
+    if (window.KGReport) KGReport.level(uNo + '-' + (i + 1) + ' ' + k[1] + '：' + lv.name, '第 ' + uNo + ' 單元 ' + u.name);
     app.innerHTML = '<div class="lvhead" style="--c:' + u.c + '"><div class="crumb"><span class="sem">下學期</span>・單元' + u.no + '・' + u.name + '　<span class="tag ' + k[0] + '">任務' + (i + 1) + '・' + k[1] + '</span></div>' +
       '<h2 id="level-title" class="level-title">' + lv.name + '</h2><div class="inst"><button class="say" aria-label="朗讀說明">🔈</button><div>' + lv.inst + '</div></div></div>' +
       '<div class="bar"><span>最佳紀錄 <span class="stars">' + G.starText(G.getStars(lvId(u, i))) + '</span></span><span class="miss">失誤 <b>0</b></span></div>' +
@@ -55,6 +56,7 @@
         var th = lv.th || [0, 2];
         var s = G.starsByMiss(miss, th[0], th[1]);
         G.setStars(lvId(u, i), s); G.sfx.win();
+        if (window.KGReport) KGReport.done({ stars: s });
         var nxt = i + 1 < u.levels.length ? '#/' + u.id + '/' + (i + 1) : null;
         if (!nxt) { var ui = G.units.indexOf(u); if (ui + 1 < G.units.length) nxt = '#/' + G.units[ui + 1].id + '/0'; }
         var msg = s === 3 ? '調查任務完美達成！' : s === 2 ? '很棒！再挑戰三顆星吧！' : '任務完成！多練習會更厲害喔！';

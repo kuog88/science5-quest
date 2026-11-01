@@ -6,6 +6,10 @@ G.esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return
 G.shuffle = function (a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; };
 G.starsByMiss = function (m, a, b) { a = a == null ? 0 : a; b = b == null ? 2 : b; return m <= a ? 3 : m <= b ? 2 : 1; };
 G.starText = function (n) { return '★★★'.slice(0, n) + '☆☆☆'.slice(0, 3 - n); };
+/* 家長報表：每次作答記一筆（q 題目、a 孩子的答案、c 正確答案；沒載入 parent-report.js 就略過） */
+G.rep = function (ok, q, a, c) { if (window.KGReport) KGReport.answer(ok, { q: q, a: a, c: c }); };
+/* 選項是圖片（SVG）時去掉標籤會變空白，改用 Q.optT 的文字說明 */
+G.optText = function (Q, k) { return String(Q.opts[k]).replace(/<[^>]+>/g, '').trim() ? Q.opts[k] : (Q.optT && Q.optT[k]) || '（圖片選項）'; };
 
 /* ---------- 進度 ---------- */
 G.KEY = 'science-g5-2-progress';
@@ -132,6 +136,7 @@ G.types.quiz = function (lv, area, api) {
     area.querySelectorAll('.opt').forEach(function (b) {
       b.onclick = function () {
         var k = +b.dataset.k;
+        G.rep(k === Q.a, Q.q + (Q.big ? ' ' + Q.big : ''), G.optText(Q, k), G.optText(Q, Q.a));
         if (k === Q.a) {
           G.sfx.ok(); b.classList.add('right'); G.bump(b, 'pop');
           area.querySelectorAll('.opt').forEach(function (x) { x.disabled = true; });
@@ -160,6 +165,8 @@ G.types.sort = function (lv, area, api) {
   items.forEach(function (it) {
     var c = document.createElement('div'); c.className = 'chip'; c.innerHTML = G.chipHTML(it); pool.appendChild(c);
     G.makeDrag(c, function (chip, bin) {
+      var binName = function (k) { var b = lv.bins.filter(function (x) { return x.k === k; })[0]; return b ? b.t : k; };
+      G.rep(bin.dataset.k === it.k, '分類：「' + it.t + '」要放到哪一類？（' + lv.bins.map(function (b) { return b.t; }).join('／') + '）', '放到「' + binName(bin.dataset.k) + '」', '放到「' + binName(it.k) + '」');
       if (bin.dataset.k === it.k) {
         G.sfx.ok(); chip.className = 'chip small pop'; chip.dataset.locked = '1';
         G.$('.in', bin).appendChild(chip); left--; G.$('.left', area).textContent = left;
@@ -189,6 +196,9 @@ G.types.order = function (lv, area, api) {
     area.querySelectorAll('.ocard').forEach(function (b) {
       b.onclick = function () {
         if (b.classList.contains('done')) return;
+        var seq = R.items.map(function (x) { return x.t; }).join(' → ');
+        if (+b.dataset.k !== next) G.rep(false, '排順序：' + R.prompt, '第 ' + (next + 1) + ' 個點了「' + R.items[+b.dataset.k].t + '」', seq);
+        else if (next === R.items.length - 1) G.rep(true, '排順序：' + R.prompt, seq, seq);
         if (+b.dataset.k === next) {
           G.sfx.ok(); b.classList.add('done'); next++;
           b.insertAdjacentHTML('beforeend', '<span class="num">' + next + '</span>'); G.bump(b, 'pop');
@@ -225,6 +235,7 @@ G.types.clue = function (lv, area, api) {
     G.$('.more', area).onclick = function () { if (shown < R.clues.length) { shown++; api.miss(); G.sfx.tick(); renderClues(); } };
     area.querySelectorAll('.opt').forEach(function (b) {
       b.onclick = function () {
+        G.rep(b.dataset.o === R.ans, (lv.ask || '猜猜我是誰').replace(/[？?]$/, '') + '：' + R.clues.slice(0, shown).join('；'), b.dataset.o, R.ans);
         if (b.dataset.o === R.ans) {
           G.sfx.ok(); b.classList.add('right');
           area.querySelectorAll('.opt').forEach(function (x) { x.disabled = true; });

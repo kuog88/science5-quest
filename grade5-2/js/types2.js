@@ -49,6 +49,7 @@ G.types.sky = function (lv, area, api) {
     G.$('.ok', area).onclick = function () {
       if (solved) return;
       if (!dirPick) { G.toast('先點星星在哪個方位喔！'); return; }
+      G.rep(dirPick === R.dir && fists === R.fists, '量星星位置：' + R.name + '在哪個方位？高度角幾個拳頭？（一個拳頭約 10 度）', dirPick + '方，' + fists + ' 個拳頭（約 ' + fists * 10 + ' 度）', R.dir + '方，' + R.fists + ' 個拳頭（約 ' + R.fists * 10 + ' 度）');
       var w = G.$('.why', area);
       if (dirPick === R.dir && fists === R.fists) {
         solved = true; G.sfx.ok();
@@ -92,6 +93,8 @@ G.types.lab = function (lv, area, api) {
       if (phase !== 1) return;
       if (sel.length < 2) { G.toast('要選兩種材料喔！'); return; }
       var ok = sel.indexOf(R.ans[0]) >= 0 && sel.indexOf(R.ans[1]) >= 0;
+      var matT = function (k) { return R.mats[k].t; };
+      G.rep(ok, '氣體實驗：' + R.goal + '，要選哪兩種材料？', sel.map(matT).join(' ＋ '), R.ans.map(matT).join(' ＋ '));
       if (!ok) { G.sfx.bad(); api.miss(); G.toast('瓶子裡沒有冒泡泡……換一組材料試試！'); return; }
       phase = 2; G.sfx.ok();
       var f = G.$('.flask', area); f.classList.add('react');
@@ -103,6 +106,7 @@ G.types.lab = function (lv, area, api) {
       t.querySelectorAll('.tb').forEach(function (b) {
         b.onclick = function () {
           var k = +b.dataset.k, x = R.tests[k];
+          G.rep(k === R.test, '氣體實驗：收集到一瓶' + R.gas + '，要用哪一種方法檢驗？', x.t, R.tests[R.test].t);
           if (k === R.test) {
             G.sfx.ok(); b.classList.add('right'); t.querySelectorAll('.tb').forEach(function (y) { y.disabled = true; });
             var w = G.$('.why', area); w.innerHTML = '✅ ' + x.res + '<br>' + R.why; w.hidden = false; G.$('.nxrow', area).hidden = false;
@@ -145,6 +149,8 @@ G.types.tune = function (lv, area, api) {
     G.$('.sure', area).onclick = function () {
       if (solved) return;
       if (pick < 0) { G.toast('先點卡片聽聽看，再選一個！'); return; }
+      var best = R.items.filter(function (x) { return x.f === target; })[0];
+      G.rep(R.items[pick].f === target, '聽音辨高低：' + R.prompt, '「' + R.items[pick].t + '」', '「' + best.t + '」');
       if (R.items[pick].f === target) {
         solved = true; G.sfx.ok(); G.$('.sure', area).disabled = true;
         var w = G.$('.why', area); w.innerHTML = '✅ ' + R.why; w.hidden = false; G.$('.nxrow', area).hidden = false;
