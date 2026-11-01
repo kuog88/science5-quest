@@ -101,7 +101,7 @@
   function cleanup() {
     timers.forEach(clearTimeout); timers = [];
     stopTalk();
-    document.querySelectorAll('.clear-video, .modal').forEach((el) => el.remove());
+    document.querySelectorAll('.modal').forEach((el) => el.remove());
   }
 
   // ---------- 路由：#home、#learn-u1a、#quiz-u1a、#boss-u1 ----------
@@ -150,7 +150,7 @@
                 <div class="btns"><a class="big-btn small blue" href="#learn-${id}">📖 學習</a><a class="big-btn small" href="#quiz-${id}">⭐ 闖關</a></div>
               </div>`; }).join('')}
             <div class="lesson-row boss ${bossOpen(u) ? '' : 'locked'}">
-              <div><div class="nm">${u.boss.icon} ${u.boss.name}</div><div class="wk">${bossOpen(u) ? '整個單元大複習，有 3 顆愛心' : '先完成這單元的每一課闖關才能挑戰'}　<span class="st">${save.boss[u.id] ? starsHtml(save.boss[u.id]) : ''}</span></div></div>
+              <div><div class="nm">${u.boss.icon} ${u.boss.name}</div><div class="wk">${bossOpen(u) ? '整個單元 10 題大複習' : '先完成這單元的每一課闖關才能挑戰'}　<span class="st">${save.boss[u.id] ? starsHtml(save.boss[u.id]) : ''}</span></div></div>
               <div class="btns">${bossOpen(u) ? `<a class="big-btn small pink" href="#boss-${u.id}">挑戰魔王</a>` : `<button class="big-btn small ghost" data-act="locked">🔒</button>`}</div>
             </div>
           </div>`).join('')}
@@ -204,7 +204,7 @@
         <img src="assets/img/mascot.webp" alt="">
         <div>
           <h2>觀念都學會了嗎？</h2>
-          <p>闖關會換到另一頁，題目每次都不一樣。答對 6 題以上就過關！</p>
+          <p>闖關會換到另一頁，題目每次都不一樣。答對越多星星越多：8 題答對 4 題就過關，答對 7 題以上拿 3 顆星！</p>
           <a class="big-btn green" href="#quiz-${l.id}">開始闖關 ➜</a>
         </div>
       </section>`;
@@ -273,9 +273,11 @@
   }
 
   // =====================================================
-  // 闖關頁（一般關：8 題、答對 6 題過關；魔王關：10 題、3 顆愛心）
+  // 闖關頁（一般關 8 題、魔王關 10 題；星星依答對率計算，見 starsByRate）
   // =====================================================
   let game = null;
+  // 星星規則（自然各年級一致，見 README）：答對率 85% 以上 3 顆、65% 以上 2 顆、40% 以上 1 顆，未滿 40% 不給星（未過關）
+  const starsByRate = (right, n) => { const p = n ? right / n : 0; return p >= 0.85 ? 3 : p >= 0.65 ? 2 : p >= 0.4 ? 1 : 0; };
   function startQuiz({ lesson, unit }) {
     if (unit && !bossOpen(unit)) { toast('🔒 先完成這單元每一課的闖關喔！'); location.hash = 'home'; return; }
     let pool;
@@ -294,7 +296,7 @@
     save.recent = save.recent || {};
     save.recent[key] = pool.map((q) => q.q);
     persist();
-    game = { lesson, unit, qs: pool, i: 0, right: 0, wrong: [], hearts: 3, marks: [] };
+    game = { lesson, unit, qs: pool, i: 0, right: 0, wrong: [], marks: [] };
     // 家長報表：進入關卡（例如「1-2 闖關：認識光的現象與特性」「2-魔王 落葉魔王關」）
     const ru = unit || unitOf(lesson.id), rn = UNITS.indexOf(ru) + 1;
     if (window.KGReport) KGReport.level(lesson ? `${rn}-${lesson.no} 闖關：${lesson.title}` : `${rn}-魔王 ${unit.boss.name}`, `第 ${rn} 單元 ${ru.name}`);
@@ -309,7 +311,6 @@
       <div class="quiz-page">
         <div class="quiz-top">
           <h1>${g.lesson ? `⭐ ${g.lesson.title}` : `${g.unit.boss.icon} ${g.unit.boss.name}`}</h1>
-          ${g.unit ? `<span class="hearts" aria-label="剩 ${g.hearts} 顆愛心">${'❤️'.repeat(g.hearts)}${'🤍'.repeat(3 - g.hearts)}</span>` : ''}
           <a class="big-btn ghost small" href="#learn-${(g.lesson || L[g.unit.lessons[0]]).id}">📖 回去學習</a>
         </div>
         <div class="dots">${g.qs.map((_, i) => `<span class="dot ${i < g.i ? (g.marks[i] ? 'done' : 'miss') : i === g.i ? 'now' : ''}"></span>`).join('')}</div>
@@ -336,13 +337,13 @@
     } else {
       app.querySelectorAll('.opt').forEach((b) => b.onclick = () => answer(opts[+b.dataset.i].ok, b));
     }
-    $('#next').onclick = () => { sfx.tap(); g.i++; if (g.i < g.qs.length && !(g.unit && g.hearts <= 0)) showQ(); else finish(); };
+    $('#next').onclick = () => { sfx.tap(); g.i++; if (g.i < g.qs.length) showQ(); else finish(); };
   }
   function answer(ok, el) {
     const g = game, q = g.qs[g.i];
     if (g.answered === g.i) return; g.answered = g.i;
     g.marks[g.i] = ok;
-    if (ok) { g.right++; sfx.good(); } else { g.wrong.push(q); sfx.bad(); if (g.unit) g.hearts--; }
+    if (ok) { g.right++; sfx.good(); } else { g.wrong.push(q); sfx.bad(); }
     let rightTxt;
     if (q.tap) {
       const fig = $('#qfig');
@@ -363,39 +364,23 @@
     }
     $('#fb').innerHTML = `<div class="feedback ${ok ? 'ok' : 'no'}"><b>${ok ? '⭕ 答對了！' : `❌ 答案是「${rightTxt}」`}</b>${q.why}</div>`;
     say((ok ? '答對了！' : '答案是' + rightTxt + '。') + q.why);
-    if (g.unit) { const h = $('.hearts'); if (h) h.innerHTML = '❤️'.repeat(g.hearts) + '🤍'.repeat(3 - g.hearts); }
     const nx = $('#next');
-    if (g.unit && g.hearts <= 0) nx.textContent = '看結果 ➜';
     nx.hidden = false; nx.focus({ preventScroll: true });
     nx.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
   function finish() {
     const g = game;
     const n = g.qs.length;
-    const passed = g.unit ? g.hearts > 0 : g.right >= 6;
-    const miss = g.wrong.length;
-    const stars = g.unit ? g.hearts : miss === 0 ? 3 : miss <= 2 ? 2 : 1;
-    if (window.KGReport) KGReport.done({ stars: passed ? stars : 0, right: g.right, total: g.unit ? g.i : n });
+    const stars = starsByRate(g.right, n);
+    const passed = stars > 0;
+    if (window.KGReport) KGReport.done({ stars, right: g.right, total: n });
     if (passed) {
       if (g.lesson) save.stars[g.lesson.id] = Math.max(save.stars[g.lesson.id] || 0, stars);
       else save.boss[g.unit.id] = Math.max(save.boss[g.unit.id] || 0, stars);
       persist();
-      playClearVideo(g.lesson ? g.lesson.clip : g.unit.boss.video, () => showResult(true, stars));
-    } else showResult(false, 0);
-  }
-  function playClearVideo(name, then) {
-    const ov = document.createElement('div');
-    ov.className = 'clear-video';
-    ov.innerHTML = `<div class="clear-video-box"><video src="assets/video/${name}.mp4" playsinline preload="auto"></video><button class="skip-btn" type="button">跳過 ⏭</button></div>`;
-    document.body.appendChild(ov);
-    const v = $('video', ov);
-    v.muted = !soundOn;
-    let finished = false;
-    const done = () => { if (finished) return; finished = true; if (!ov.isConnected) return; ov.remove(); then(); };
-    v.addEventListener('ended', done); v.addEventListener('error', done);
-    $('.skip-btn', ov).addEventListener('click', done);
-    v.play().catch(() => { v.muted = true; v.play().catch(done); });
-    later(done, 8000);
+    }
+    // 原本過關會播從英文遊戲搬來的小貓影片（和課程無關），已移除，直接顯示結果頁
+    showResult(passed, stars);
   }
   function showResult(passed, stars) {
     const g = game;
@@ -406,14 +391,14 @@
     const review = g.wrong.length ? `<div class="review"><b>要再複習的題目</b>${g.wrong.map((q) => `<div>${q.q}<br><span>${q.why}</span></div>`).join('')}</div>` : '';
     if (passed) {
       sfx.win();
-      const msg = stars === 3 ? '全對！你是自然小博士！' : '過關成功！';
+      const msg = stars === 3 ? (g.right === g.qs.length ? '全對！你是自然小博士！' : '幾乎全對！你是自然小博士！') : stars === 2 ? '過關成功！再挑戰 3 顆星吧！' : '過關了！多複習會更好喔！';
       later(() => say(msg), 300);
       app.innerHTML = `
         <div class="quiz-page"><div class="panel result">
           <img class="result-img" src="assets/img/win.webp" alt="">
           <h2>${msg}</h2>
           <div class="stars" aria-label="${stars} 顆星">${'★'.repeat(stars)}<span class="off">${'★'.repeat(3 - stars)}</span></div>
-          <p>${g.unit ? `剩下 ${g.hearts} 顆愛心` : `答對 ${g.right} / ${g.qs.length} 題`}</p>
+          <p>答對 ${g.right} / ${g.qs.length} 題</p>
           ${review}
           <div class="actions">
             <a class="big-btn ghost" href="#${g.unit ? 'boss-' + g.unit.id : 'quiz-' + l.id}" data-again>🔁 再玩一次</a>
@@ -424,13 +409,13 @@
         </div></div>`;
     } else {
       sfx.bad();
-      const msg = g.unit ? '愛心用完了，回去複習再來！' : `答對 ${g.right} 題，差一點點！`;
+      const msg = `答對 ${g.right} 題，還差一點點！`;
       later(() => say(msg + '看看錯的題目，再回去學一次吧。'), 300);
       app.innerHTML = `
         <div class="quiz-page"><div class="panel result">
           <img class="result-img" src="assets/img/tryagain.webp" alt="">
           <h2>${msg}</h2>
-          <p>${g.unit ? '' : '答對 6 題以上就能過關。'}</p>
+          <p>答對 ${Math.ceil(g.qs.length * 0.4)} 題以上就能過關。</p>
           ${review}
           <div class="actions">
             <a class="big-btn green" href="#learn-${backLearn}">📖 回去學習</a>

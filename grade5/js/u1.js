@@ -46,7 +46,7 @@
   }
 
   window.LESSONS.u1a = {
-    id: 'u1a', no: '1', title: '太陽在天空中的位置變化', weeks: '1–2', clip: 'sky',
+    id: 'u1a', no: '1', title: '太陽在天空中的位置變化', weeks: '1–2',
     intro: '太陽每天從東邊升起、西邊落下。拉動時間看看，太陽走到哪裡，竿子的影子就跑到哪裡。',
     svg: sunSVG,
     hint: '拉下面的時間軸，看太陽和竿影怎麼變。點圖上的圓點，會跳出講解。',
@@ -143,7 +143,7 @@
   </svg>`;
 
   window.LESSONS.u1b = {
-    id: 'u1b', no: '2', title: '認識光的現象與特性', weeks: '3–4', clip: 'rainbow',
+    id: 'u1b', no: '2', title: '認識光的現象與特性', weeks: '3–4',
     intro: '陽光看起來是白色的，其實藏著好多顏色。光碰到水、玻璃時還會轉彎，放大鏡更能把光聚在一起。',
     svg: lightSVG,
     chips: ['prism', 'spectrum', 'straw', 'lens', 'focus'],

@@ -3,13 +3,13 @@
 window.EXAM_TITLE = '本次月考範圍';
 window.UNITS = [
   { id: 'u1', no: '一', name: '太陽與光', icon: '☀️', tint: '#fbefc9', weeks: '1–4', exam: true,
-    lessons: ['u1a', 'u1b'], boss: { name: '流星魔王關', icon: '🌠', video: 'boss-meteor' } },
+    lessons: ['u1a', 'u1b'], boss: { name: '流星魔王關', icon: '🌠' } },
   { id: 'u2', no: '二', name: '植物世界', icon: '🌱', tint: '#dcebd2', weeks: '5–9', exam: true,
-    lessons: ['u2a', 'u2b'], boss: { name: '落葉魔王關', icon: '🍂', video: 'boss-leaves' } },
+    lessons: ['u2a', 'u2b'], boss: { name: '落葉魔王關', icon: '🍂' } },
   { id: 'u3', no: '三', name: '水溶液', icon: '🧪', tint: '#e3dcf0', weeks: '10–15', exam: false,
-    lessons: ['u3a', 'u3b', 'u3c'], boss: { name: '彩虹魔王關', icon: '🌈', video: 'rainbow' } },
+    lessons: ['u3a', 'u3b', 'u3c'], boss: { name: '彩虹魔王關', icon: '🌈' } },
   { id: 'u4', no: '四', name: '力與運動', icon: '🚲', tint: '#f3dcc8', weeks: '16–21', exam: false,
-    lessons: ['u4a', 'u4b', 'u4c'], boss: { name: '煙火魔王關', icon: '🎆', video: 'boss-fireworks' } },
+    lessons: ['u4a', 'u4b', 'u4c'], boss: { name: '煙火魔王關', icon: '🎆' } },
 ];
 window.LESSONS = {};
 

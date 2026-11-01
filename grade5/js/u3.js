@@ -34,7 +34,7 @@
     if (ro) ro.innerHTML = `加了 <b>${sugar}</b> 匙糖（每匙 10 g）　總重量 <b>${250 + sugar * 10} g</b><br>${extra > 0 ? `杯底有 <b>${extra}</b> 匙溶不下去，出現沉澱` : sugar ? '糖全部溶解了，看不到顆粒' : '還沒加糖'}${hotWater ? '　🔥 熱水可以溶更多糖' : ''}`;
   }
   window.LESSONS.u3a = {
-    id: 'u3a', no: '1', title: '溶解現象', weeks: '10', clip: 'pets',
+    id: 'u3a', no: '1', title: '溶解現象', weeks: '10',
     intro: '糖放進水裡，攪一攪就不見了，它跑去哪裡了？溶解以後，重量會不會變？一起來實驗。',
     svg: dissolveSVG,
     chips: ['solute', 'solvent', 'rod', 'scale', 'sediment'],
@@ -118,7 +118,7 @@
   const liqPart = (k, say, points) => ({ name: LIQ[k].name, kind: TYPE[LIQ[k].type] + '水溶液', c: LIQ[k].type === 'acid' ? '--acid' : LIQ[k].type === 'base' ? '--base' : '--neutral', say, points, art: bottleArt(LIQ[k].cab, '') });
 
   window.LESSONS.u3b = {
-    id: 'u3b', no: '2', title: '水溶液的酸鹼性', weeks: '11–14', clip: 'mood',
+    id: 'u3b', no: '2', title: '水溶液的酸鹼性', weeks: '11–14',
     intro: '醋和肥皂水都是透明的，怎麼知道誰是酸性、誰是鹼性？用石蕊試紙和紫色高麗菜汁來檢驗。',
     svg: acidSVG,
     hint: '點瓶子上方的圓點，石蕊試紙會變色，還會唸出結果。',
@@ -197,7 +197,7 @@
     if (ro) ro.innerHTML = `${c.name}：${c.on ? `💡 燈泡<b>${c.on < 0.8 ? '微微亮' : '亮'}</b>了，可以導電` : '燈泡<b>不亮</b>，不能導電'}`;
   }
   window.LESSONS.u3c = {
-    id: 'u3c', no: '3', title: '水溶液的導電性', weeks: '15', clip: 'toys',
+    id: 'u3c', no: '3', title: '水溶液的導電性', weeks: '15',
     intro: '電要走一圈完整的路，燈泡才會亮。把不同的水溶液接進電路裡，看看誰能讓電通過。',
     svg: condSVG,
     chips: ['battery', 'bulbP', 'electrode', 'circuit', 'liquid'],

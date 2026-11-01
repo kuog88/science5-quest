@@ -39,7 +39,7 @@
     if (ro) ro.innerHTML = `掛了 <b>${wt}</b> 個砝碼（每個 10 g）　彈簧伸長 <b>${cm}</b> 公分<br>${wt > LIMIT ? '⚠️ 超過<b>彈性限度</b>了！拿下砝碼也回不去原來長度' : stretched ? '⚠️ 彈簧被拉壞了，回不到原本的長度' : wt ? '砝碼數變 2 倍，伸長量也變 2 倍' : '彈簧是原來的長度'}`;
   }
   window.LESSONS.u4a = {
-    id: 'u4a', no: '1', title: '力的測量', weeks: '16–17', clip: 'sports',
+    id: 'u4a', no: '1', title: '力的測量', weeks: '16–17',
     intro: '彈簧被拉會變長，放手又會彈回去。掛上砝碼看看，掛越多，彈簧就伸越長嗎？',
     svg: springSVG,
     chips: ['spring', 'weight', 'ruler', 'scale'],
@@ -120,7 +120,7 @@
     if (ro) ro.innerHTML = `在<b>${s.name}</b>上：車子滑了約 <b>${Math.round(s.dist / 10)}</b> 公分　用彈簧秤拉木塊約 <b>${s.pull}</b> 格<br>${surf === 'towel' ? '表面粗糙，摩擦力<b>大</b>，車子很快停下來' : surf === 'glass' ? '表面光滑，摩擦力<b>小</b>，車子滑最遠' : '摩擦力中等'}`;
   }
   window.LESSONS.u4b = {
-    id: 'u4b', no: '2', title: '摩擦力', weeks: '18–19', clip: 'school',
+    id: 'u4b', no: '2', title: '摩擦力', weeks: '18–19',
     intro: '玩具車從斜坡滑下來，最後一定會停下來。是誰讓它停下來的？換不同的地面試試看。',
     svg: fricSVG,
     chips: ['surface', 'fric', 'ramp', 'heat'],
@@ -191,7 +191,7 @@
     if (ro) ro.innerHTML = `跑 75 公尺用了 <b>${secs}</b> 秒　速度 ＝ 75 ÷ ${secs} ≈ <b>${(75 / secs).toFixed(1)}</b> 公尺/秒<br>${carSpeed === 3 ? '速度最快，動能最大，積木被撞得最遠！' : carSpeed === 1 ? '速度慢，動能小，積木只被推一點點' : '速度中等'}`;
   }
   window.LESSONS.u4c = {
-    id: 'u4c', no: '3', title: '運動狀態的快慢', weeks: '20–21', clip: 'family',
+    id: 'u4c', no: '3', title: '運動狀態的快慢', weeks: '20–21',
     intro: '誰跑得比較快？只看距離或只看時間都不夠。再看看，跑得越快的車子，撞積木的力量是不是越大？',
     svg: speedSVG,
     chips: ['speed', 'time', 'distance', 'kinetic'],

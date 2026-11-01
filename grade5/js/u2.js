@@ -46,7 +46,7 @@
   const sp = (o) => o; // 只是讓下面的資料好讀
 
   window.LESSONS.u2a = {
-    id: 'u2a', no: '1', title: '植物根莖葉的功能', weeks: '5–7', clip: 'jungle',
+    id: 'u2a', no: '1', title: '植物根莖葉的功能', weeks: '5–7',
     intro: '植物的身體分成好幾個部位，每個部位都有自己的工作。點點看，水是怎麼從根跑到葉子的？',
     svg: plantSVG,
     chips: ['root', 'stem', 'leaf', 'flower', 'fruit'],
@@ -151,7 +151,7 @@
   </svg>`;
 
   window.LESSONS.u2b = {
-    id: 'u2b', no: '2–3', title: '植物的繁殖與人類生活', weeks: '8–9', clip: 'fruit',
+    id: 'u2b', no: '2–3', title: '植物的繁殖與人類生活', weeks: '8–9',
     intro: '花是植物生寶寶的地方。看蜜蜂怎麼幫花傳花粉，花又怎麼變成果實、種子怎麼去旅行；再看看人怎麼利用植物、向植物學點子。',
     svg: flowerSVG,
     chips: ['petal', 'sepal', 'stamen', 'stigma', 'ovary'],
@@ -198,7 +198,7 @@
         art: `<svg viewBox="0 0 160 110"><rect x="20" y="40" width="40" height="66" rx="6" fill="var(--water)" opacity=".45" stroke="var(--muted)" stroke-width="2"/><path d="M40 106 V20" stroke="var(--stem)" stroke-width="4"/><ellipse cx="54" cy="24" rx="14" ry="8" fill="var(--leaf)" transform="rotate(-20 54 24)"/><path d="M40 98 l-8 8 M40 98 l8 8 M40 92 l-10 4" stroke="var(--root)" stroke-width="2"/><ellipse cx="116" cy="74" rx="30" ry="22" fill="var(--sunc)" opacity=".85"/><circle cx="104" cy="66" r="3" fill="var(--root)"/><path d="M104 66 q-2 -14 6 -22" stroke="var(--leaf)" stroke-width="3" fill="none"/></svg>` },
       leafprop: { name: '用葉繁殖', kind: '不用種子也能繁殖・落地生根、石蓮', c: '--leaf', say: '落地生根的葉子邊緣會長出小芽和小根，葉子掉到土上就能長成新植物。石蓮的葉子放在土上，也會長出新的小植株。', points: ['用葉子長出新的植物', '落地生根：葉緣長出小芽', '石蓮：葉子放在土上會長根發芽'],
         art: `<svg viewBox="0 0 160 110"><rect y="86" width="160" height="24" fill="var(--soil)"/><path d="M20 80 C50 50 110 50 140 80 C110 92 50 92 20 80Z" fill="var(--leaf)"/>${[40, 62, 84, 106, 126].map((x) => `<g transform="translate(${x} ${x === 40 || x === 126 ? 76 : 62})"><path d="M0 0 q-5 -10 0 -16 q5 6 0 16" fill="var(--stem)"/><path d="M0 2 v8" stroke="var(--root)" stroke-width="1.5"/></g>`).join('')}</svg>` },
-      rootprop: { name: '用根繁殖', kind: '不用種子也能繁殖・番薯', c: '--root', say: '番薯是塊根，把番薯放在潮濕的地方，它會長出新芽和葉子，切下來種就能長成新的番薯藤。', points: ['用根長出新的植物', '番薯（塊根）會長出新芽', '剪下番薯藤種下去也能繁殖'],
+      rootprop: { name: '用根繁殖', kind: '不用種子也能繁殖・番薯', c: '--root', say: '番薯是塊根，把番薯放在潮濕的地方，它會長出新芽和葉子，切下來種就能長成新的番薯藤。', points: ['用根長出新的植物', '番薯（塊根）會長出新芽', '番薯藤是莖，剪藤扦插則是用莖繁殖'],
         art: `<svg viewBox="0 0 160 110"><ellipse cx="80" cy="74" rx="50" ry="24" fill="var(--flower)" transform="rotate(-8 80 74)"/><path d="M70 54 q-6 -20 4 -38 M92 52 q6 -18 -2 -34" stroke="var(--stem)" stroke-width="3" fill="none"/><ellipse cx="74" cy="16" rx="10" ry="6" fill="var(--leaf)"/><ellipse cx="90" cy="18" rx="10" ry="6" fill="var(--leaf)"/><path d="M40 88 l-10 14 M120 80 l12 14" stroke="var(--root)" stroke-width="2"/></svg>` },
     },
     actions: [
