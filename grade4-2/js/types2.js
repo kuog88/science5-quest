@@ -54,6 +54,7 @@ G.types.arrow = function (lv, area, api) {
       if (solved) return;
       if (!pt) { G.toast('先點一個白色圓點當作用點！'); return; }
       if (!dir) { G.toast('再選一個方向喔！'); return; }
+      G.rep(pt === R.pt && dir === R.dir && len === R.len, '畫出力的箭頭（1 格代表 ' + lv.unit + '）：' + R.story, '作用點在' + PTS[pt][2] + '、方向 ' + dir + '、長度 ' + len + ' 格', '作用點在' + PTS[R.pt][2] + '、方向 ' + R.dir + '、長度 ' + R.len + ' 格');
       if (pt === R.pt && dir === R.dir && len === R.len) {
         solved = true; G.sfx.ok(); G.$('.go', area).disabled = true;
         var w = G.$('.why', area);
@@ -101,6 +102,8 @@ G.types.build = function (lv, area, api) {
   items.forEach(function (it) {
     var c = document.createElement('div'); c.className = 'chip'; c.innerHTML = G.chipHTML(it); pool.appendChild(c);
     G.makeDrag(c, function (chip, zone) {
+      var ZN = { head: '頭', thorax: '胸', abdomen: '腹', none: '昆蟲沒有（垃圾桶）' };
+      G.rep(zone.getAttribute('data-k') === it.k, '組裝昆蟲：「' + it.t + '」要裝在昆蟲身體的哪裡？', '放到「' + ZN[zone.getAttribute('data-k')] + '」', '放到「' + ZN[it.k] + '」');
       if (zone.getAttribute('data-k') === it.k) {
         G.sfx.ok(); chip.remove(); left--; G.$('.left', area).textContent = left;
         if (it.g) G.$(TOP[it.g] ? '.parts-top' : '.parts', area).insertAdjacentHTML('beforeend', G.BUG_PARTS[it.g]);
@@ -155,6 +158,9 @@ G.types.siphon = function (lv, area, api) {
     function refill() { waterY = TOP; G.$('.bw', area).setAttribute('height', 0); G.$('.bw', area).setAttribute('y', 358); drip.setAttribute('opacity', 0); hosew.classList.remove('flowing'); busy = false; draw(); }
     G.$('.go', area).onclick = function () {
       if (busy || solved) return;
+      var rq = '虹吸換水：' + R.goal, rc = '先把水管裝滿水，出水口放得比水面低' + (R.target ? '，而且和' + (R.mark || '紅線') + '一樣高' : '');
+      if (!filled) G.rep(false, rq, '水管還沒裝滿水就放開出水口', rc);
+      else if (outY <= waterY) G.rep(false, rq, '出水口比水族箱的水面還高', rc);
       if (!filled) { G.sfx.bad(); api.miss(); G.toast('水管裡都是空氣，水流不過來……要先把水管裝滿水喔！'); return; }
       if (outY <= waterY) { G.sfx.bad(); api.miss(); G.toast('出水口比水族箱的水面還高，水流不出來！把出水口放低一點。'); return; }
       var stop = Math.min(outY, INLET), ok = R.target ? Math.abs(stop - R.target) <= 3 : true;
@@ -167,6 +173,7 @@ G.types.siphon = function (lv, area, api) {
         draw();
         if (waterY >= stop) {
           clearInterval(timer); hosew.classList.remove('flowing'); drip.setAttribute('opacity', 0);
+          G.rep(ok, rq, ok ? '出水口放對高度，水面停在正確位置' : '出水口太' + (stop < R.target ? '高，水面還沒降到' : '低，水面降過了') + (R.mark || '紅線'), rc);
           if (ok) {
             solved = true; G.sfx.ok(); G.$('.go', area).disabled = true;
             var w = G.$('.why', area); w.innerHTML = '✅ ' + R.why; w.hidden = false; G.$('.nxrow', area).hidden = false;
