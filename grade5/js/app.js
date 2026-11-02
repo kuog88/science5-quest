@@ -155,7 +155,9 @@
             </div>
           </div>`).join('')}
       </section>
+      <section class="exam-sec"><div id="exam-box"></div></section>
       <button class="reset-link" data-act="reset">清除闖關紀錄</button>`;
+    if (window.KGExam && window.EXAM_BANK) KGExam.mount($('#exam-box', app), EXAM_BANK);
     app.onclick = (e) => {
       const el = e.target.closest('[data-act]'); if (!el) return;
       if (el.dataset.act === 'hello') { sfx.tap(); say('嗨！我們一起來學自然吧！'); }

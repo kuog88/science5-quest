@@ -278,3 +278,7 @@ main {
   .feedback { font-size: 1.15rem; }
   .feedback b { font-size: 1.3rem; }
 }
+
+
+/* 📝 月考測驗卷區塊（KGExam.mount 畫在 #exam-box） */
+.exam-sec { max-width: 1100px; margin: 22px auto 10px; background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); overflow: hidden; }
