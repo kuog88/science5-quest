@@ -166,3 +166,6 @@ table.rec td.cur{background:#4a3a10}
   .grade-link{font-size:13px;padding:6px 8px}
   #btn-home,#btn-sound{width:38px;height:38px;font-size:17px}
 }
+
+/* 📝 月考測驗卷區塊（KGExam.mount 畫在 #exam-box） */
+.exam-sec{max-width:1100px;margin:22px auto 10px;background:#fff;border-radius:20px;padding:16px;box-shadow:0 4px 14px rgba(0,0,0,.12);overflow:hidden}
