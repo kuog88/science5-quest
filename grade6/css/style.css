@@ -156,3 +156,6 @@ button{font-family:inherit;color:var(--ink);touch-action:manipulation;cursor:poi
 .hl{opacity:0;transition:opacity .2s}
 .readout{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:6px}
 .readout span{padding:6px 12px;border-radius:999px;background:#f4f9ff;border:2px solid #cfe3f7;font-weight:800;font-size:15px}
+
+/* 📝 月考測驗卷區塊（KGExam.mount 畫在 #exam-box） */
+.exam-sec{max-width:1100px;margin:22px auto 10px;background:#fff;border-radius:20px;padding:16px;box-shadow:0 4px 14px rgba(0,0,0,.12);overflow:hidden}
