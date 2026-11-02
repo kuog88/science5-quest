@@ -23,8 +23,10 @@
             return '<button class="lvbtn" data-h="#/' + u.id + '/' + i + '"><span class="tag ' + k[0] + '">' + k[1] + '</span><span class="nm">' + lv.name + '</span><span class="stars">' + G.starText(G.getStars(lvId(u, i))) + '</span></button>';
           }).join('') + '</div>';
       }).join('') + '</div>' +
+      '<section class="exam-sec"><div id="exam-box"></div></section>' +
       '<button class="reset">清除我的星星紀錄</button>' +
       '<p class="foot">可用滑鼠或手指操作・星星只存在這台裝置</p>';
+    if (window.KGExam && window.EXAM_BANK) KGExam.mount(G.$('#exam-box', app), EXAM_BANK);
     app.querySelectorAll('.lvbtn').forEach(function (b) { b.onclick = function () { location.hash = b.dataset.h; }; });
     G.$('.reset', app).onclick = function () {
       if (confirm('確定要清除所有星星嗎？')) { G.save.stars = {}; G.persist(); home(); }

@@ -149,3 +149,6 @@ button{font-family:inherit;color:var(--ink);touch-action:manipulation;cursor:poi
 .tools .chip{cursor:pointer;touch-action:manipulation}
 .sim svg.maze{max-width:520px}
 .maze .mir{cursor:pointer}
+
+/* 📝 月考測驗卷區塊（KGExam.mount 畫在 #exam-box） */
+.exam-sec{max-width:1100px;margin:22px auto 10px;background:#fff;border-radius:20px;padding:16px;box-shadow:0 4px 14px rgba(0,0,0,.12);overflow:hidden}
