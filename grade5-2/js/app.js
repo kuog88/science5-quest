@@ -28,8 +28,10 @@
             return '<button class="lvbtn" data-h="#/' + u.id + '/' + i + '"><span class="top"><span class="tag ' + k[0] + '">任務' + (i + 1) + '・' + k[1] + '</span><span class="stars">' + G.starText(G.getStars(lvId(u, i))) + '</span></span><span class="nm">' + lv.name + '</span></button>';
           }).join('') + '</div></div>';
       }).join('') + '</div></div>' +
+      '<section class="exam-sec"><div id="exam-box"></div></section>' +
       '<button class="reset">清除下學期的星星紀錄</button>' +
       '<p class="foot">可用滑鼠或手指操作・星星只存在這台裝置・這裡是<b>下學期</b>，上學期請按「← 選年級」</p>';
+    if (window.KGExam && window.EXAM_BANK) KGExam.mount(G.$('#exam-box', app), EXAM_BANK);
     app.querySelectorAll('.lvbtn').forEach(function (b) { b.onclick = function () { location.hash = b.dataset.h; }; });
     G.$('.reset', app).onclick = function () {
       if (confirm('確定要清除下學期的所有星星嗎？')) { G.save.stars = {}; G.persist(); home(); }
