@@ -137,3 +137,25 @@ button{font-family:inherit;color:var(--ink);touch-action:manipulation;cursor:poi
 
 /* 📝 月考測驗卷區塊（KGExam.mount 畫在 #exam-box） */
 .exam-sec{max-width:1100px;margin:22px auto 10px;background:#fff;border-radius:20px;padding:16px;box-shadow:0 4px 14px rgba(0,0,0,.12);overflow:hidden}
+
+/* 三版本補充單元（溶解實驗、菜汁變色、力的箭頭） */
+.mission{padding:10px 14px;border-radius:14px;background:#fff8e1;border:2px solid #ffe08a;font-size:19px;font-weight:900;margin-bottom:10px}
+.seg{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:8px 0}
+.seg button{padding:8px 14px;border-radius:12px;border:3px solid var(--line);background:#fff;font-weight:900;font-size:16px}
+.seg button.on{border-color:var(--orange);background:#fff1e3;color:#c4561b}
+table.rec{border-collapse:collapse;margin:10px auto;font-size:16px;font-weight:800}
+table.rec th,table.rec td{border:2px solid var(--line);padding:6px 10px;text-align:center;background:#fff}
+table.rec th{background:#f1fbef}
+table.rec td.cur{background:#fff6c9}
+.tubes{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.tube{width:96px;text-align:center;font-weight:800;font-size:14px;border:3px solid var(--line);border-radius:16px;padding:6px;background:#fff;box-shadow:0 4px 0 var(--line)}
+.tube svg{width:60px;height:110px;display:block;margin:0 auto}
+.tube.done{border-color:var(--green)}
+.arrowsvg{width:100%;max-width:620px;margin:0 auto;height:auto;display:block;border-radius:16px;background:#fffdf5;border:3px solid var(--line);touch-action:none}
+.ctrl{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center;margin-top:12px}
+.ctrl .grp{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:14px;background:#f1fbef;font-weight:900}
+.ctrl .grp .opt{padding:8px 12px;text-align:center;font-size:17px}
+.opt.sel{border-color:var(--orange);background:#fff1e3}
+.pt{cursor:pointer}
+.pt circle{fill:#fff;stroke:#8a5530;stroke-width:3}
+.pt.sel circle{fill:var(--orange);stroke:#c4561b}
