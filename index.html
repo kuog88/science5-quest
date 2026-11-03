@@ -34,7 +34,6 @@ h1 span{display:inline-block;animation:bob 2.6s ease-in-out infinite}
 @media (prefers-reduced-motion:reduce){*{animation:none !important}}
 </style>
 
-
 <style id="sem-style">
 .sem{display:flex;align-items:center;gap:10px;max-width:960px;margin:26px auto 12px;padding:0 4px;font:900 22px "Microsoft JhengHei","PingFang TC","Noto Sans TC",sans-serif;color:#2b2b3a}
 .sem span{font-size:13px;font-weight:700;padding:3px 12px;border-radius:99px;background:#fff;border:2px solid currentColor}
@@ -56,6 +55,16 @@ h1 span{display:inline-block;animation:bob 2.6s ease-in-out infinite}
 </head>
 <body>
   <h1><span>🔬</span> 自然探險島</h1>
+<!-- 設定精靈 -->
+<section style="margin:6px auto 26px;max-width:880px;padding:0 4px">
+  <p style="text-align:center;font-weight:700;color:#555;margin:0 0 10px">爸爸媽媽先設定一次：選年級、課本版本、學期、要準備的考試，就會帶孩子到對的關卡。</p>
+  <div id="kgv-root"></div>
+  <p style="text-align:center;color:#777;margin:18px 0 0">設定好以後，進到年級頁上方也能隨時換版本和考試範圍。下面也可以直接點年級進去。</p>
+</section>
+<script src="https://kuog88.github.io/kg-ver.js"></script>
+<script>KGVer.wizard(document.getElementById('kgv-root'), {"subject": "science", "name": "自然", "grades": [3, 4, 5, 6], "books": {"3上": "grade3/", "3下": "grade3-2/", "4上": "grade4/", "4下": "grade4-2/", "5上": "grade5/", "5下": "grade5-2/", "6上": "grade6/", "6下": "grade6-2/"}});</script>
+<!-- /設定精靈 -->
+
   <p class="sub">你是幾年級的小科學家？選一個年級開始探險吧！</p>
 <h2 class="sem up">📘 上學期</h2>
   <div class="grades">
@@ -126,11 +135,6 @@ h1 span{display:inline-block;animation:bob 2.6s ease-in-out infinite}
   </div>
 <!-- /下學期 -->
 
-
-
-
-
-  
   <p class="foot">南一版（115 學年度）‧ 學習進度只存在你自己的瀏覽器裡</p>
 <script src="https://kuog88.github.io/home-button.js" defer></script>
 <script src="https://kuog88.github.io/bgm.js" defer></script>
