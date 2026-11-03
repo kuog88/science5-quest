@@ -152,3 +152,14 @@ button{font-family:inherit;color:var(--ink);touch-action:manipulation;cursor:poi
 
 /* 📝 月考測驗卷區塊（KGExam.mount 畫在 #exam-box） */
 .exam-sec{max-width:1100px;margin:22px auto 10px;background:#fff;border-radius:20px;padding:16px;box-shadow:0 4px 14px rgba(0,0,0,.12);overflow:hidden}
+
+/* 三版本補充單元（冰水蒸氣實驗、菜汁變色）：只作用在搬來的實驗面板，不影響本冊原有的 .seg／.slider */
+.tmlab .mission,.cablab .mission{padding:10px 14px;border-radius:14px;background:#fff8e1;border:2px solid #ffe08a;font-size:19px;font-weight:900;margin-bottom:10px}
+.tmlab .seg{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:8px 0;padding:0;border:none;background:none;border-radius:0}
+.tmlab .seg button{padding:8px 14px;border-radius:12px;border:3px solid var(--line);background:#fff;font-weight:900;font-size:16px}
+.tmlab input.slider{width:100%;max-width:520px;display:block;margin:10px auto;accent-color:var(--orange);height:34px}
+.tmlab .bk svg{max-width:260px}
+.tubes{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.tube{width:96px;text-align:center;font-weight:800;font-size:14px;border:3px solid var(--line);border-radius:16px;padding:6px;background:#fff;box-shadow:0 4px 0 var(--line)}
+.tube svg{width:60px;height:110px;display:block;margin:0 auto}
+.tube.done{border-color:var(--green)}
