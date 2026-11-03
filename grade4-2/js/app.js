@@ -1,37 +1,74 @@
-/* 四年級下學期・森林遊俠營地：首頁營地地圖、關卡流程、結算 */
+/* 四年級下學期・森林遊俠營地：首頁營地地圖、關卡流程、結算（三版本：單元依 BOOK 目前版本排列） */
 (function () {
   var app = G.$('#app');
   var TITLE = '四年級下學期・森林遊俠營地';
   var KIND = { op: ['op', '動手做'], idea: ['idea', '觀念題'], boss: ['boss', '挑戰題'] };
 
+  var PUB = { nani: '南一', kang: '康軒', han: '翰林' };
   function lvId(u, i) { return u.id + '-' + (i + 1); }
+  function unitOf(id) { return G.units.filter(function (x) { return x.id === id; })[0]; }
+
+  /* ---------- 三版本 ---------- */
+  function ver() { return window.KGVer ? KGVer.cur(BOOK).version : BOOK.defaultVersion; }
+  function vunits() { return window.KGVer ? KGVer.units(BOOK) : BOOK.versions[BOOK.defaultVersion]; }
+  /* 版本單元的 levels：'u2' 是整個遊戲單元，'u2-1' 只用第 1 關 → [[遊戲單元, 關卡索引], …] */
+  function slots(vu) {
+    var out = [];
+    vu.levels.forEach(function (ref) {
+      var m = String(ref).match(/^(\w+?)(?:-(\d+))?$/), u = m && unitOf(m[1]);
+      if (!u) return;
+      if (m[2]) out.push([u, +m[2] - 1]); else u.levels.forEach(function (_, i) { out.push([u, i]); });
+    });
+    return out;
+  }
+  function seq() { var s = []; vunits().forEach(function (vu) { slots(vu).forEach(function (x) { s.push(x); }); }); return s; }
+  /* 這一關在目前版本屬於哪個單元（找不到就用遊戲單元本身） */
+  function ctxOf(u, i) {
+    var all = BOOK.versions[ver()] || [];
+    for (var k = 0; k < all.length; k++) {
+      if (slots(all[k]).some(function (x) { return x[0] === u && x[1] === i; })) return { no: all[k].no, title: all[k].title };
+    }
+    return { no: u.no, title: u.name };
+  }
+  function examBank() {
+    var v = ver(), eb = { grade: EXAM_BANK.grade, papers: EXAM_BANK.papers, bank: EXAM_BANK.bank.filter(function (q) { return !q || !q.only || q.only.indexOf(v) >= 0; }) };
+    return window.KGVer ? KGVer.examBank(BOOK, eb) : eb;
+  }
+  G.mountExam = function () {
+    var box = G.$('#exam-box');
+    if (box && window.KGExam && window.EXAM_BANK) KGExam.mount(box, examBank());
+  };
   function total() {
     var s = 0, m = 0;
-    G.units.forEach(function (u) { u.levels.forEach(function (_, i) { s += G.getStars(lvId(u, i)); m += 3; }); });
+    seq().forEach(function (x) { s += G.getStars(lvId(x[0], x[1])); m += 3; });
     return [s, m];
   }
 
   function home() {
     G.$('#top-title').textContent = TITLE;
-    document.title = '四年級下學期・森林遊俠營地（自然 南一版）';
+    document.title = '四年級下學期・森林遊俠營地（自然 ' + PUB[ver()] + '版）';
     var t = total();
     app.innerHTML = '<section class="hero"><div class="ribbon">🍁 下學期 🍁</div>' +
       '<h1 class="home-title">⛺ 森林遊俠營地</h1>' +
-      '<p>四年級<b style="color:var(--bad)">下學期</b>・南一版自然</p>' +
+      '<p>四年級<b style="color:var(--bad)">下學期</b>・' + PUB[ver()] + '版自然</p>' +
       '<p>背起背包當自然遊俠，走完營地四個站點，收集每一枚徽章！</p>' +
       '<div class="total">⭐ 收集星星 <b>' + t[0] + '</b> / ' + t[1] + '</div></section>' +
-      '<div class="camp"><h2 class="route">🧭 本學期營地路線</h2><div class="stations">' + G.units.map(function (u) {
-        return '<div class="station" style="--c:' + u.c + '"><div class="ph"><div class="badge"><span class="em">' + u.e + '</span><span class="no">單元' + u.no + '</span></div>' +
-          '<div><h2>' + u.name + '</h2><p class="sub">' + u.spot + '・' + u.sub + '</p></div></div><div class="lvs">' +
-          u.levels.map(function (lv, i) {
-            var k = KIND[lv.kind];
-            return '<button class="lvbtn" data-h="#/' + u.id + '/' + i + '"><span class="top"><span class="tag ' + k[0] + '">關卡' + (i + 1) + '・' + k[1] + '</span><span class="stars">' + G.starText(G.getStars(lvId(u, i))) + '</span></span><span class="nm">' + lv.name + '</span></button>';
+      '<div id="ver-bar"></div>' +
+      '<div class="camp"><h2 class="route">🧭 本學期營地路線</h2><div class="stations">' + vunits().map(function (vu) {
+        var sl = slots(vu), u0 = sl.length ? sl[0][0] : { e: '📘', c: 'var(--amber)' }, subs = [];
+        sl.forEach(function (x) { if (subs.indexOf(x[0]) < 0) subs.push(x[0]); });
+        return '<div class="station" style="--c:' + u0.c + '"><div class="ph"><div class="badge"><span class="em">' + u0.e + '</span><span class="no">單元' + vu.no + '</span></div>' +
+          '<div><h2>' + vu.title + '</h2><p class="sub">' + subs.map(function (u) { return u.spot + '・' + u.sub; }).join('｜') + '</p></div></div><div class="lvs">' +
+          sl.map(function (x, n) {
+            var u = x[0], i = x[1], lv = u.levels[i], k = KIND[lv.kind];
+            return '<button class="lvbtn" data-h="#/' + u.id + '/' + i + '"><span class="top"><span class="tag ' + k[0] + '">關卡' + (n + 1) + '・' + k[1] + '</span><span class="stars">' + G.starText(G.getStars(lvId(u, i))) + '</span></span><span class="nm">' + lv.name + '</span></button>';
           }).join('') + '</div></div>';
       }).join('') + '</div></div>' +
       '<section class="exam-sec"><div id="exam-box"></div></section>' +
       '<button class="reset">清除下學期的星星紀錄</button>' +
       '<p class="foot">可用滑鼠或手指操作・星星只存在這台裝置・這裡是<b>下學期</b>，上學期請按「← 選年級」</p>';
-    if (window.KGExam && window.EXAM_BANK) KGExam.mount(G.$('#exam-box', app), EXAM_BANK);
+    if (window.KGVer) KGVer.bar(G.$('#ver-bar', app), BOOK, home);
+    G.mountExam();
     app.querySelectorAll('.lvbtn').forEach(function (b) { b.onclick = function () { location.hash = b.dataset.h; }; });
     G.$('.reset', app).onclick = function () {
       if (confirm('確定要清除下學期的所有星星嗎？')) { G.save.stars = {}; G.persist(); home(); }
@@ -39,14 +76,14 @@
   }
 
   function level(u, i) {
-    var lv = u.levels[i], miss = 0, done = false;
+    var lv = u.levels[i], miss = 0, done = false, cx = ctxOf(u, i);
     G.score = { ok: 0 };
     G.unpick();
-    G.$('#top-title').textContent = '下學期・' + u.e + ' ' + u.name;
+    G.$('#top-title').textContent = '下學期・' + u.e + ' ' + cx.title;
     document.title = lv.name + '｜四年級下學期・森林遊俠營地';
-    var k = KIND[lv.kind], uNo = u.id.replace(/\D/g, '');
-    if (window.KGReport) KGReport.level(uNo + '-' + (i + 1) + ' ' + k[1] + '：' + lv.name, '第 ' + uNo + ' 單元 ' + u.name);
-    app.innerHTML = '<div class="lvhead" style="--c:' + u.c + '"><div class="crumb"><span class="sem">下學期</span>・單元' + u.no + '・' + u.name + '　<span class="tag ' + k[0] + '">關卡' + (i + 1) + '・' + k[1] + '</span></div>' +
+    var k = KIND[lv.kind];
+    if (window.KGReport) KGReport.level(cx.no + '-' + (i + 1) + ' ' + k[1] + '：' + lv.name, '第 ' + cx.no + ' 單元 ' + cx.title);
+    app.innerHTML = '<div class="lvhead" style="--c:' + u.c + '"><div class="crumb"><span class="sem">下學期</span>・單元' + cx.no + '・' + cx.title + '　<span class="tag ' + k[0] + '">' + k[1] + '</span></div>' +
       '<h2 id="level-title" class="level-title">' + lv.name + '</h2><div class="inst"><button class="say" aria-label="朗讀說明">🔈</button><div>' + lv.inst + '</div></div></div>' +
       '<div class="bar"><span>最佳紀錄 <span class="stars">' + G.starText(G.getStars(lvId(u, i))) + '</span></span><span class="miss">失誤 <b>0</b></span></div>' +
       '<div class="area"></div>';
@@ -59,8 +96,9 @@
         var ok = G.score.ok, s = G.starsByRate(ok, miss), rate = ok + miss ? Math.round(ok / (ok + miss) * 100) : 100;
         if (s) { G.setStars(lvId(u, i), s); G.sfx.win(); } else G.sfx.bad();
         if (window.KGReport) KGReport.done({ stars: s });
-        var nxt = i + 1 < u.levels.length ? '#/' + u.id + '/' + (i + 1) : null;
-        if (!nxt) { var ui = G.units.indexOf(u); if (ui + 1 < G.units.length) nxt = '#/' + G.units[ui + 1].id + '/0'; }
+        /* 下一關：依目前版本的單元順序 */
+        var sq = seq(), nxt = null;
+        for (var n = 0; n < sq.length; n++) if (sq[n][0] === u && sq[n][1] === i) { if (sq[n + 1]) nxt = '#/' + sq[n + 1][0].id + '/' + sq[n + 1][1]; break; }
         var msg = s === 0 ? '答對的還不到四成，這次沒有過關。先看重點整理，再挑戰一次！' : s === 3 ? (miss ? '幾乎全對，太厲害了！' : '完美通關，拿到金徽章！') : s === 2 ? '很棒！再挑戰三顆星吧！' : '過關了！多練習會更厲害喔！';
         area.innerHTML = '<div class="panel result"><div style="font-size:64px">' + (s === 0 ? '💪' : s === 3 ? '🏅' : s === 2 ? '🎒' : '🥾') + '</div>' +
           '<div class="bigstars">' + G.starText(s) + '</div><h2>' + msg + '</h2><p>答對 ' + ok + ' 次、失誤 ' + miss + ' 次（答對率 ' + rate + '%）</p>' +
@@ -82,7 +120,7 @@
     if (window.speechSynthesis) speechSynthesis.cancel();
     var m = location.hash.match(/^#\/(\w+)\/(\d+)/);
     if (m) {
-      var u = G.units.filter(function (x) { return x.id === m[1]; })[0];
+      var u = unitOf(m[1]);
       if (u && u.levels[+m[2]]) return level(u, +m[2]);
     }
     home();

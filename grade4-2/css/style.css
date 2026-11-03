@@ -171,3 +171,21 @@ button{font-family:inherit;color:var(--ink);touch-action:manipulation;cursor:poi
 
 /* 📝 月考測驗卷區塊（KGExam.mount 畫在 #exam-box） */
 .exam-sec{max-width:1100px;margin:22px auto 10px;background:#fff;border-radius:20px;padding:16px;box-shadow:0 4px 14px rgba(0,0,0,.12);overflow:hidden}
+
+/* 三版本補充單元（太陽影子觀測、導電與串並聯實驗，由四上搬來）：改用營地配色 */
+.sim svg{width:100%;max-width:620px;margin:0 auto;height:auto;display:block}
+.simrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.simbox{border-radius:14px;border:2px solid var(--line);padding:10px;text-align:center;background:var(--card)}
+.simbox h3{margin:0 0 4px}
+.msg{min-height:30px;font-size:19px;font-weight:900;text-align:center;margin-top:8px}
+.slider{display:flex;align-items:center;gap:10px;max-width:620px;margin:10px auto 0;font-weight:800;color:var(--muted);font-size:14px}
+.slider input{flex:1;height:36px;accent-color:var(--amber);touch-action:pan-y}
+.tasks{list-style:none;padding:0;margin:10px auto 0;max-width:460px;font-size:17px;font-weight:700;line-height:1.9}
+.tasks li.ok{color:var(--moss-d)}
+.ctl{display:flex;flex-direction:column;gap:8px;align-items:center;margin-top:8px;font-size:16px}
+.ctl>div{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center}
+.seg{padding:9px 12px;border-radius:12px;border:2px solid var(--wood2);background:#fff;font-size:16px;font-weight:800;color:var(--ink)}
+.seg.on{border-color:var(--amber);background:var(--amber-l)}
+.note{text-align:center;color:var(--muted);font-weight:800;margin:8px 0 0}
+.chip.tested{border-color:var(--moss);box-shadow:0 4px 0 var(--moss-d)}
+.tools .chip{cursor:pointer;touch-action:manipulation}
