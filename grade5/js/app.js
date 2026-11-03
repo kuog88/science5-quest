@@ -6,7 +6,38 @@
   // ---------- 工具 ----------
   const shuffle = (arr) => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
   const unitOf = (lessonId) => UNITS.find((u) => u.lessons.includes(lessonId));
-  const examBadge = (u) => (u && u.exam ? `<span class="exam-badge">📝 ${window.EXAM_TITLE || '月考範圍'}</span>` : '');
+  // ---------- 三版本：單元依 BOOK 目前版本排列（星星仍記在課的 id 上） ----------
+  const PUB = { nani: '南一', kang: '康軒', han: '翰林' };
+  const RG = { m1: '期中考範圍', m2: '期末考範圍' };
+  const ver = () => (window.KGVer ? KGVer.cur(BOOK).version : BOOK.defaultVersion);
+  const vunits = () => (window.KGVer ? KGVer.units(BOOK) : BOOK.versions[BOOK.defaultVersion]);
+  const vlessons = (vu) => vu.levels.filter((id) => L[id]);
+  const seq = () => vunits().flatMap(vlessons);
+  // 魔王關：版本單元的課剛好等於某個遊戲單元就用它（沿用原本紀錄），否則用「版本＋單元號」
+  function bossOf(vu) {
+    const ls = vlessons(vu), gu = UNITS.find((u) => u.lessons.join() === ls.join()), u0 = gu || unitOf(ls[0]);
+    return { id: gu ? gu.id : ver() + vu.no, no: vu.no, name: vu.title, lessons: ls, boss: u0.boss, tint: u0.tint, icon: u0.icon };
+  }
+  const allBosses = () => (BOOK.versions[ver()] || []).map(bossOf);
+  // 這一課在目前版本屬於哪個單元、是第幾課
+  function ctxOf(id) {
+    const find = (v) => (BOOK.versions[v] || []).find((x) => x.levels.includes(id));
+    const vu = find(ver()) || find('nani') || find('kang') || find('han'); // 不在目前版本的課，用有這一課的版本
+    if (vu) return { no: vu.no, name: vu.title, idx: vlessons(vu).indexOf(id) + 1, b: bossOf(vu) };
+    const u = unitOf(id); return { no: UNITS.indexOf(u) + 1, name: u.name, idx: u.lessons.indexOf(id) + 1, b: u };
+  }
+  const weekTxt = (l) => (ver() === 'nani' && l.weeks ? `第 ${l.weeks} 週　` : '');
+  const examBadge = (id) => {
+    const r = window.KGVer ? KGVer.cur(BOOK).range : 'all';
+    return RG[r] && seq().includes(id) ? `<span class="exam-badge">📝 ${RG[r]}</span>` : '';
+  };
+  // 月考測驗卷：先拿掉別的版本專用的題目（q.only），再依版本組卷
+  function examBank() {
+    const v = ver(), eb = { grade: EXAM_BANK.grade, papers: EXAM_BANK.papers, bank: EXAM_BANK.bank.filter((q) => !q || !q.only || q.only.includes(v)) };
+    return window.KGVer ? KGVer.examBank(BOOK, eb) : eb;
+  }
+  function mountExam() { const box = document.getElementById('exam-box'); if (box && window.KGExam && window.EXAM_BANK) KGExam.mount(box, examBank()); }
+  window.mountExam = mountExam;
   const starsHtml = (n) => '★'.repeat(n) + '☆'.repeat(3 - n);
 
   // ---------- 進度（存在這台裝置的瀏覽器） ----------
@@ -111,7 +142,7 @@
     const m = h.match(/^(learn|quiz|boss)-(\w+)$/);
     if (m && m[1] === 'learn' && L[m[2]]) renderLearn(L[m[2]]);
     else if (m && m[1] === 'quiz' && L[m[2]]) startQuiz({ lesson: L[m[2]] });
-    else if (m && m[1] === 'boss' && UNITS.find((u) => u.id === m[2])) startQuiz({ unit: UNITS.find((u) => u.id === m[2]) });
+    else if (m && m[1] === 'boss' && allBosses().find((u) => u.id === m[2])) startQuiz({ unit: allBosses().find((u) => u.id === m[2]) });
     else renderHome();
     window.scrollTo(0, 0);
   }
@@ -123,30 +154,28 @@
   function bossOpen(u) { return u.lessons.every((id) => save.stars[id]); }
   function renderHome() {
     setTitle('五上自然闖關');
-    const all = UNITS.flatMap((u) => u.lessons).length + UNITS.length;
-    const done = Object.keys(save.stars).length + Object.keys(save.boss).length;
+    document.title = `五上自然闖關探索館（${PUB[ver()]}版）`;
+    const vus = vunits(), bosses = vus.map(bossOf), ids = seq();
+    const all = ids.length + bosses.length;
+    const done = ids.filter((id) => save.stars[id]).length + bosses.filter((u) => save.boss[u.id]).length;
     app.innerHTML = `
       <section class="home-hero">
         <button class="mascot" data-act="hello" aria-label="跟小貓打招呼"><img src="assets/img/mascot.webp" alt="毛氈小貓吉祥物"></button>
         <div>
           <h1>五上自然闖關探索館</h1>
-          <p>每一課先到「學習」點點看、聽講解，學會了再按「闖關」挑戰。</p>
+          <p>${PUB[ver()]}版・每一課先到「學習」點點看、聽講解，學會了再按「闖關」挑戰。</p>
           <span class="overall">已完成 ${done} / ${all} 關</span>
         </div>
       </section>
-      ${UNITS.some((u) => u.exam) ? `<section class="exam-banner">
-        <b>📝 ${window.EXAM_TITLE || '月考範圍'}</b>
-        <span>${UNITS.filter((u) => u.exam).map((u) => `單元${u.no} ${u.name}`).join('、')}</span>
-        <span class="links">${UNITS.filter((u) => u.exam).flatMap((u) => u.lessons).map((id) => `<a class="big-btn small pink" href="#learn-${id}">${L[id].title}</a>`).join('')}</span>
-      </section>` : ''}
+      <div id="ver-bar"></div>
       <section class="units">
-        ${UNITS.map((u) => `
-          <div class="unit ${u.exam ? 'exam' : ''}" style="--tint:${u.tint}">
+        ${bosses.map((u) => `
+          <div class="unit" style="--tint:${u.tint}">
             <div class="unit-head"><div class="unit-orb" aria-hidden="true">${u.icon}</div>
-              <div><small>單元${u.no}・第 ${u.weeks} 週</small><h2>${u.name}</h2>${examBadge(u)}</div></div>
-            ${u.lessons.map((id) => { const l = L[id]; const s = save.stars[id] || 0; return `
+              <div><small>單元${u.no}・${u.lessons.length} 課</small><h2>${u.name}</h2></div></div>
+            ${u.lessons.map((id, n) => { const l = L[id]; const s = save.stars[id] || 0; return `
               <div class="lesson-row">
-                <div><div class="nm">${l.no}. ${l.title}</div><div class="wk">第 ${l.weeks} 週　<span class="st" aria-label="${s} 顆星">${starsHtml(s)}</span></div></div>
+                <div><div class="nm">${n + 1}. ${l.title}</div><div class="wk">${weekTxt(l)}<span class="st" aria-label="${s} 顆星">${starsHtml(s)}</span></div></div>
                 <div class="btns"><a class="big-btn small blue" href="#learn-${id}">📖 學習</a><a class="big-btn small" href="#quiz-${id}">⭐ 闖關</a></div>
               </div>`; }).join('')}
             <div class="lesson-row boss ${bossOpen(u) ? '' : 'locked'}">
@@ -157,7 +186,8 @@
       </section>
       <section class="exam-sec"><div id="exam-box"></div></section>
       <button class="reset-link" data-act="reset">清除闖關紀錄</button>`;
-    if (window.KGExam && window.EXAM_BANK) KGExam.mount($('#exam-box', app), EXAM_BANK);
+    if (window.KGVer) KGVer.bar($('#ver-bar', app), BOOK, renderHome);
+    mountExam();
     app.onclick = (e) => {
       const el = e.target.closest('[data-act]'); if (!el) return;
       if (el.dataset.act === 'hello') { sfx.tap(); say('嗨！我們一起來學自然吧！'); }
@@ -175,14 +205,14 @@
   let cur = null; // 目前的課
   function renderLearn(l) {
     cur = l;
-    const u = unitOf(l.id);
+    const u = ctxOf(l.id);
     setTitle(`${u.name}・${l.title}`);
     const seen = new Set(save.seen[l.id] || []);
     const total = Object.keys(l.parts).length;
     app.innerHTML = `
       <section class="lesson-head">
-        <div class="eyebrow">單元${u.no} ${u.name}・${l.no}. ${l.title}・第 ${l.weeks} 週</div>
-        ${examBadge(u) ? `<div>${examBadge(u)}</div>` : ''}
+        <div class="eyebrow">單元${u.no} ${u.name}・${u.idx}. ${l.title}${weekTxt(l) ? '・' + weekTxt(l).trim() : ''}</div>
+        ${examBadge(l.id) ? `<div>${examBadge(l.id)}</div>` : ''}
         <h1>${l.title}</h1>
         <p>${l.intro}</p>
         <span class="explored" id="explored"></span>
@@ -300,8 +330,8 @@
     persist();
     game = { lesson, unit, qs: pool, i: 0, right: 0, wrong: [], marks: [] };
     // 家長報表：進入關卡（例如「1-2 闖關：認識光的現象與特性」「2-魔王 落葉魔王關」）
-    const ru = unit || unitOf(lesson.id), rn = UNITS.indexOf(ru) + 1;
-    if (window.KGReport) KGReport.level(lesson ? `${rn}-${lesson.no} 闖關：${lesson.title}` : `${rn}-魔王 ${unit.boss.name}`, `第 ${rn} 單元 ${ru.name}`);
+    const cx = ctxOf(lesson ? lesson.id : unit.lessons[0]);
+    if (window.KGReport) KGReport.level(lesson ? `${cx.no}-${cx.idx} 闖關：${lesson.title}` : `${cx.no}-魔王 ${unit.boss.name}`, `第 ${cx.no} 單元 ${cx.name}`);
     setTitle(lesson ? `闖關：${lesson.title}` : `${unit.boss.name}`);
     showQ();
   }
@@ -386,9 +416,9 @@
   }
   function showResult(passed, stars) {
     const g = game;
-    const l = g.lesson, u = g.unit || unitOf(l.id);
+    const l = g.lesson, u = g.unit || ctxOf(l.id).b;
     const idx = l ? u.lessons.indexOf(l.id) : -1;
-    const nextId = l && idx < u.lessons.length - 1 ? u.lessons[idx + 1] : null;
+    const nextId = l && idx >= 0 && idx < u.lessons.length - 1 ? u.lessons[idx + 1] : null;
     const backLearn = (l || L[u.lessons[0]]).id;
     const review = g.wrong.length ? `<div class="review"><b>要再複習的題目</b>${g.wrong.map((q) => `<div>${q.q}<br><span>${q.why}</span></div>`).join('')}</div>` : '';
     if (passed) {
